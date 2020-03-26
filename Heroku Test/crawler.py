@@ -46,18 +46,20 @@ def addTweetLists(*list):
 
 
 def main():
-    user_list = ["realDonaldTrump", "BernieSanders", "JoeBiden", "elonmusk", "tconnellyRTE", "BarackObama", "Samsung", "NASA"]
+    user_list = ["EU_Comission", "BernieSanders", "JoeBiden", "elonmusk", "tconnellyRTE", "BarackObama", "Samsung", "NASA"]
 
-    br_news_tweets = getTweets("#breaking-news", "2020-03-26", 30)
-    user_news = getTweetsByUsers(user_list, "2020-03-25", 4)
-    news_tweets = getTweets("coronavirus", "2020-03-25", 10)
-    ad_tweets = getTweets("#ad", "2020-03-25", 10)
-    economy = getTweets("economy", "2020-03-25", 4)
-    olympics = getTweets("olympic games", "2020-03-25", 4)
-    russia = getTweets("russia", "2020-03-25", 6)
-    europe = getTweets("#europe", "2020-03-20", 4)
+    user_news = getTweetsByUsers(user_list, "2020-03-20", 4)
+    news_tweets = getTweets("coronavirus", "2020-03-20", 10)
+    ad_tweets = getTweets("#ad", "2020-03-20", 10)
+    economy = getTweets("economy", "2020-03-20", 4)
+    olympics = getTweets("olympic games", "2020-03-20", 4)
+    russia = getTweets("russia", "2020-03-20", 6)
+    europe = getTweets("#europe", "2020-03-10", 4)
+    br_news_tweets = getTweets("#breaking-news", "2020-03-20", 30)
 
     addTweetLists(br_news_tweets, user_news, news_tweets, ad_tweets, economy, olympics, russia, europe)
+
+    return tweetList
 
 
 if __name__ == '__main__':
