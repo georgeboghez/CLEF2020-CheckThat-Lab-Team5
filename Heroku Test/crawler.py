@@ -49,7 +49,7 @@ def addTweetLists(*list):
 
 
 def main():
-    user_list = ["EU_Comission", "BernieSanders", "JoeBiden",
+    user_list = ["EU_Comission", "realDonaldTrump", "BernieSanders", "JoeBiden",
                  "elonmusk", "tconnellyRTE", "BarackObama", "Samsung", "NASA"]
 
     user_news = getTweetsByUsers(user_list, "2020-03-20", 4)
@@ -60,10 +60,10 @@ def main():
     russia = getTweets("russia", "2020-03-20", 6)
     europe = getTweets("#europe", "2020-03-10", 4)
     br_news_tweets = getTweets("#breaking-news", "2020-03-20", 30)
+    general_news = getTweets("news", "2020-03-20", 20)
 
-    displayTweets(user_news)
     addTweetLists(br_news_tweets, user_news, news_tweets,
-                  ad_tweets, economy, olympics, russia, europe)
+                  ad_tweets, economy, olympics, russia, europe, general_news)
 
     return tweetList
 
