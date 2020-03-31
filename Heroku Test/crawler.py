@@ -8,7 +8,7 @@ ACCESS_TOKEN_SECRET = 'P6kfsxgeTkL7e6vifWf5VJmDQVKIKMehPyJLPJ16RcglK'
 
 
 auth = tw.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
-auth.set_ACCESS_TOKEN(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 api = tw.API(auth, wait_on_rate_limit=True)
 
 tweetList = list()
