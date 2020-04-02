@@ -1,12 +1,14 @@
-import tweepy as tw
 from random import shuffle
+import tweepy as tw
+import requests
 import json
+import time
+import os
 
 consumer_key = 'CmQS1BFO5D38aYu38isgYfQSM'
 consumer_secret = '0BT4Pvkox9y4USuKmzsh6IzzfymdMcPrCKANnYVc82qXZMRn7D'
 access_token = '1242346386756112384-rBnQ65dlWwgbVQp6Me6op8AEqogEgn'
 access_token_secret = 'P6kfsxgeTkL7e6vifWf5VJmDQVKIKMehPyJLPJ16RcglK'
-
 
 auth = tw.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
@@ -48,6 +50,17 @@ def addTweetLists(*list):
     shuffle(tweetList)
 
 
+def autoInsertTweets():
+    WAIT_TIME_SECONDS = 3 * 3600  # 3 ore
+
+    while True:
+        time.sleep(WAIT_TIME_SECONDS)
+        response = requests.get('http://ip2020.herokuapp.com/post')
+        print(response.text, type(response.text))
+        if response.status_code != 200:
+            print("eroare")
+
+
 def main():
     user_list = ["EU_Comission", "realDonaldTrump", "BernieSanders", "JoeBiden",
                  "elonmusk", "tconnellyRTE", "BarackObama", "Samsung", "NASA"]
@@ -60,7 +73,7 @@ def main():
     russia = getTweets("russia", "2020-03-20", 6)
     europe = getTweets("#europe", "2020-03-10", 4)
     br_news_tweets = getTweets("#breaking-news", "2020-03-20", 30)
-    general_news = getTweets("news", "2020-03-20", 20)
+    general_news = getTweets("news", "2020-03-20", 2)
 
     addTweetLists(br_news_tweets, user_news, news_tweets,
                   ad_tweets, economy, olympics, russia, europe, general_news)

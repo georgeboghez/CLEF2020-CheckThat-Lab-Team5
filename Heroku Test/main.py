@@ -1,13 +1,12 @@
 #!/usr/bin/env python
-import os
-import pymongo
-import json
-import crawler
-import requests
 from flask import Flask, render_template, request, redirect, jsonify
-from pymongo import MongoClient
 from bson.json_util import dumps
-
+from pymongo import MongoClient
+import threading
+import pymongo
+import crawler
+import json
+import os
 
 MONGO_URL = 'mongodb://heroku_pp4rkrx5:9919l2jg2bmm0jrvf50oj8m3f3@ds141613.mlab.com:41613/heroku_pp4rkrx5?retryWrites=false'
 client = MongoClient(MONGO_URL)
@@ -45,7 +44,7 @@ def special():
     return render_template('special.html')
 
 
-@app.route("/post", methods=['POST'])
+@app.route("/post", methods=['GET'])
 def post():
     global CONTOR
     for tweet in crawler.main():
@@ -54,9 +53,15 @@ def post():
         if not tweet2:
             CONTOR += 1
             tweets_id = db.tweetsTable.insert_one(tweet)
-    return redirect('/secret')
+    return "1"
 
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    t1 = threading.Thread(target=app.run, args=('0.0.0.0', port))
+    t1.start()
+    # app.run(host='0.0.0.0', port=port)
+    t2 = threading.Thread(target=crawler.autoInsertTweets)
+    t2.start()
+    t1.join()
+    t2.join()
