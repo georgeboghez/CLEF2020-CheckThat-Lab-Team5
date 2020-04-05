@@ -1,6 +1,6 @@
-import os
-import json
 import requests
+import json
+import os
 
 if __name__ == '__main__':
     # os.environ['NO_PROXY'] = '127.0.0.1'
