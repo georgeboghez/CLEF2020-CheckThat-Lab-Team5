@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from flask import Flask, render_template, request, redirect, jsonify
+from filter import is_news, remove_irrelevant_keys
 from bson.json_util import dumps
 from pymongo import MongoClient
 import threading
@@ -21,7 +22,7 @@ def index():
     global CONTOR
     if CONTOR == 0:
         return render_template('welcome.html')
-    tweetsList = db.tweetsTable.find().sort('_id', -1).limit(CONTOR)
+    tweetsList = db.filteredTweets.find().sort('_id', -1).limit(CONTOR)
     tweetsList = list(tweetsList)
     CONTOR = 0
     return jsonify(dumps(tweetsList))
@@ -29,13 +30,13 @@ def index():
 
 @app.route("/all", methods=['GET'])
 def all():
-    tweetsList = list(db.tweetsTable.find())
+    tweetsList = list(db.filteredTweets.find())
     return jsonify(dumps(tweetsList))
 
 
 @app.route("/all/<int:count>", methods=['GET'])
 def getCountTweets(count):
-    tweetsList = list(db.tweetsTable.find().sort('_id', -1).limit(count))
+    tweetsList = list(db.filteredTweets.find().sort('_id', -1).limit(count))
     return jsonify(dumps(tweetsList))
 
 
@@ -49,10 +50,12 @@ def post():
     global CONTOR
     for tweet in crawler.main():
         tweet = json.loads(tweet)
-        tweet2 = db.tweetsTable.find_one({"id_str": tweet['id_str']})
+        tweet2 = db.filteredTweets.find_one({"id_str": tweet['id_str']})
         if not tweet2:
-            CONTOR += 1
-            tweets_id = db.tweetsTable.insert_one(tweet)
+            if is_news(tweet):
+                CONTOR += 1
+                tweet = remove_irrelevant_keys(tweet)
+                db.filteredTweets.insert_one(tweet)
     return "1"
 
 

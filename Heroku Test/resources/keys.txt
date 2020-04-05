@@ -1,0 +1,13 @@
+_id
+contributors
+coordinates
+display_text_range
+favorite_count
+favorited
+geo
+id_str
+in_reply_to_status_id_str
+in_reply_to_user_id_str
+is_quote_status
+source
+truncated
