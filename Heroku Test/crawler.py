@@ -21,9 +21,9 @@ def getTweets(search_word, date_since, count):
     if count < 0:
         raise ValueError("Count negativ!")
     if type(count) != int:
-        raise ValueError("Count nu este de tip int!")
+        raise TypeError("Count nu este de tip int!")
     if type(search_word) != str:
-        raise ValueError("Search word nu este string!")
+        raise TypeError("Search word nu este string!")
 
     global tweetList
     length = len(tweetList)
@@ -36,16 +36,16 @@ def getTweets(search_word, date_since, count):
     if len(tweetList) - length == count:
         return True
     return False
-        #raise ValueError("Nu s-au adaugat tweets")
+    #raise ValueError("Nu s-au adaugat tweets")
 
 
 def getTweetsByUsers(user_ids, date_since, count):
     if type(count) != int:
-        raise ValueError("Count nu este de tip int!")
+        raise TypeError("Count nu este de tip int!")
     if count < 0:
         raise ValueError("Count negativ!")
     if type(user_ids) != list:
-        raise ValueError("Lista de users invalida!")
+        raise TypeError("Lista de users invalida!")
 
     global tweetList
     length = len(tweetList)
@@ -55,7 +55,7 @@ def getTweetsByUsers(user_ids, date_since, count):
                                               id=user,
                                               tweet_mode='extended',
                                               since=date_since).items(count))]
-    if len(tweetList) - length == count*len(user_ids):
+    if len(tweetList) - length == count * len(user_ids):
         return True
     return False
 
