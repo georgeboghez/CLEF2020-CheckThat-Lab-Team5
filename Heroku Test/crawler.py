@@ -21,9 +21,9 @@ def getTweets(search_word, date_since, count):
     if count < 0:
         raise ValueError("Count negativ!")
     if type(count) != int:
-        raise ValueError("Count nu este de tip int!")
+        raise TypeError("Count nu este de tip int!")
     if type(search_word) != str:
-        raise ValueError("Search word nu este string!")
+        raise TypeError("Search word nu este string!")
 
     global tweetList
     length = len(tweetList)
@@ -36,16 +36,16 @@ def getTweets(search_word, date_since, count):
     if len(tweetList) - length == count:
         return True
     return False
-        #raise ValueError("Nu s-au adaugat tweets")
+    #raise ValueError("Nu s-au adaugat tweets")
 
 
 def getTweetsByUsers(user_ids, date_since, count):
     if type(count) != int:
-        raise ValueError("Count nu este de tip int!")
+        raise TypeError("Count nu este de tip int!")
     if count < 0:
         raise ValueError("Count negativ!")
     if type(user_ids) != list:
-        raise ValueError("Lista de users invalida!")
+        raise TypeError("Lista de users invalida!")
 
     global tweetList
     length = len(tweetList)
@@ -55,7 +55,7 @@ def getTweetsByUsers(user_ids, date_since, count):
                                               id=user,
                                               tweet_mode='extended',
                                               since=date_since).items(count))]
-    if len(tweetList) - length == count*len(user_ids):
+    if len(tweetList) - length == count * len(user_ids):
         return True
     return False
 
@@ -69,13 +69,14 @@ def autoInsertTweets():
         print(response.text, type(response.text))
         if response.status_code != 200:
             print("eroare")
+    return False
 
 
 def main():
     user_list = ["EU_Comission", "realDonaldTrump", "BernieSanders",
                  "JoeBiden", "elonmusk", "tconnellyRTE",
                  "BarackObama", "Samsung", "NASA"]
-
+    global tweetList
     getTweetsByUsers(user_list, "2020-03-20", 4)
     getTweets("coronavirus", "2020-03-20", 10)
     getTweets("#ad", "2020-03-20", 10)
@@ -92,6 +93,8 @@ def main():
     getTweets("#selling", "2020-03-20", 20)
     getTweets("#weather", "2020-03-20", 15)
 
+    if len(tweetList) != 14:
+        return false
     return tweetList
 
 

@@ -35,9 +35,10 @@ def all():
 
 @app.route("/all/<int:count>", methods=['GET'])
 def getCountTweets(count):
+    if count > db.filteredTweets.count_documents({}):
+        raise ValueError("Count too big")
     tweetsList = list(db.filteredTweets.find().sort('_id', -1).limit(count))
     return jsonify(dumps(tweetsList))
-
 
 @app.route("/secret", methods=['GET'])
 def special():
@@ -55,7 +56,7 @@ def post():
                 CONTOR += 1
                 tweet = remove_irrelevant_keys(tweet)
                 db.filteredTweets.insert_one(tweet)
-    return "1"
+    return "done"
 
 
 if __name__ == '__main__':
