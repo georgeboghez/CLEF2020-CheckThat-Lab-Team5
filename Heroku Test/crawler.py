@@ -93,8 +93,8 @@ def main():
     getTweets("#selling", "2020-03-20", 20)
     getTweets("#weather", "2020-03-20", 15)
 
-    if len(tweetList) != 14:
-        return false
+    if len(tweetList) != 178:
+        raise ValueError("Invalid number of tweets!")
     return tweetList
 
 
