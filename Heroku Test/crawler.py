@@ -69,13 +69,14 @@ def autoInsertTweets():
         print(response.text, type(response.text))
         if response.status_code != 200:
             print("eroare")
+    return False
 
 
 def main():
     user_list = ["EU_Comission", "realDonaldTrump", "BernieSanders",
                  "JoeBiden", "elonmusk", "tconnellyRTE",
                  "BarackObama", "Samsung", "NASA"]
-
+    global tweetList
     getTweetsByUsers(user_list, "2020-03-20", 4)
     getTweets("coronavirus", "2020-03-20", 10)
     getTweets("#ad", "2020-03-20", 10)
@@ -92,6 +93,8 @@ def main():
     getTweets("#selling", "2020-03-20", 20)
     getTweets("#weather", "2020-03-20", 15)
 
+    if len(tweetList) != 14:
+        return false
     return tweetList
 
 

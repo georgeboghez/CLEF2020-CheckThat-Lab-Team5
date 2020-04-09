@@ -17,6 +17,11 @@ class TestCrawler(unittest.TestCase):
         self.assertRaises(ValueError, crawler.getTweetsByUsers, ["NASA"], "2020-03-20", -5)
         self.assertRaises(ValueError, crawler.getTweetsByUsers, ["NASA"], "2020-03-20", "5")
 
+    def test_autoInsertTweets(self):
+        self.assertFalse(crawler.test_autoInsertTweets(),"Eroare la while infinit. Iesit din while.")
+
+    def test_main(self):
+        self.assertFalse(crawler.test_main(),"Tweetlist neviabil")
 
 if __name__ == '__main__':
     unittest.main()
