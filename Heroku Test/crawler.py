@@ -18,24 +18,46 @@ tweetList = list()
 
 
 def getTweets(search_word, date_since, count):
+    if count < 0:
+        raise ValueError("Count negativ!")
+    if type(count) != int:
+        raise ValueError("Count nu este de tip int!")
+    if type(search_word) != str:
+        raise ValueError("Search word nu este string!")
+
     global tweetList
+    length = len(tweetList)
     tweetList += [json.dumps(tweet._json, indent=4, sort_keys=True)
                   for tweet in (tw.Cursor(api.search,
                                           q=search_word,
                                           lang="en",
                                           tweet_mode='extended',
                                           since=date_since).items(count))]
+    if len(tweetList) - length == count:
+        return True
+    return False
+        #raise ValueError("Nu s-au adaugat tweets")
 
 
-def getTweetsByUsers(user_ids, date_since, count, query=""):
+def getTweetsByUsers(user_ids, date_since, count):
+    if type(count) != int:
+        raise ValueError("Count nu este de tip int!")
+    if count < 0:
+        raise ValueError("Count negativ!")
+    if type(user_ids) != list:
+        raise ValueError("Lista de users invalida!")
+
     global tweetList
+    length = len(tweetList)
     for user in user_ids:
         tweetList += [json.dumps(tweet._json, indent=4, sort_keys=True)
                       for tweet in (tw.Cursor(api.user_timeline,
-                                              q=query,
                                               id=user,
                                               tweet_mode='extended',
                                               since=date_since).items(count))]
+    if len(tweetList) - length == count*len(user_ids):
+        return True
+    return False
 
 
 def autoInsertTweets():

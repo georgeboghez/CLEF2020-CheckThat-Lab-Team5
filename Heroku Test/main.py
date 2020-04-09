@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, jsonify
 from filter import is_news, remove_irrelevant_keys
 from bson.json_util import dumps
 from pymongo import MongoClient
+import unittest
 import threading
 import pymongo
 import crawler
@@ -68,3 +69,5 @@ if __name__ == '__main__':
     t2.start()
     t1.join()
     t2.join()
+
+
