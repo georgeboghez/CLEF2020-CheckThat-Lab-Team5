@@ -3,9 +3,8 @@ from flask import Flask, render_template, request, redirect, jsonify
 from bson.json_util import dumps
 from pymongo import MongoClient
 from filter import is_news
-import unittest
 import threading
-import pymongo
+import unittest
 import crawler
 import json
 import os
