@@ -31,7 +31,10 @@ def index():
 
 @app.route("/all", methods=['GET'])
 def all():
-    tweetsList = list(db.filteredTweets.find())
+    try:
+        tweetsList = list(db.filteredTweets.find())
+    except:
+        raise MemoryError("Not enough memory")
     return jsonify(dumps(tweetsList))
 
 
@@ -65,7 +68,10 @@ def special():
 @app.route("/post", methods=['GET'])
 def post():
     global CONTOR
-    for tweet in crawler.main():
+    tweetlist = crawler.main()
+    if tweetlist == False:
+        return "invalid number of retrieved tweets"
+    for tweet in tweetlist:
         tweet = json.loads(tweet)
         tweet2 = db.filteredTweets.find_one({"id_str": tweet['id_str']})
         if not tweet2:
