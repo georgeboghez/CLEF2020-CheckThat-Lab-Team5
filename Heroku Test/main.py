@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 from flask import Flask, render_template, request, redirect, jsonify
-from filter import is_news, remove_irrelevant_keys
 from bson.json_util import dumps
 from pymongo import MongoClient
+from filter import is_news
 import unittest
 import threading
 import pymongo
@@ -42,6 +42,21 @@ def getCountTweets(count):
     tweetsList = list(db.filteredTweets.find().sort('_id', -1).limit(count))
     return jsonify(dumps(tweetsList))
 
+
+@app.route("/all_unfiltered_tweets", methods=['GET'])
+def unfiltered_tweets():
+    tweetsList = list(db.unfilteredTweets.find())
+    return jsonify(dumps(tweetsList))
+
+
+@app.route("/all_unfiltered_tweets/<int:count>", methods=['GET'])
+def getCountUnfilteredTweets(count):
+    if count > db.unfilteredTweets.count_documents({}):
+        raise ValueError("Count too big")
+    tweetsList = list(db.unfilteredTweets.find().sort('_id', -1).limit(count))
+    return jsonify(dumps(tweetsList))
+
+
 @app.route("/secret", methods=['GET'])
 def special():
     return render_template('special.html')
@@ -54,9 +69,9 @@ def post():
         tweet = json.loads(tweet)
         tweet2 = db.filteredTweets.find_one({"id_str": tweet['id_str']})
         if not tweet2:
+            db.unfilteredTweets.insert_one(tweet)
             if is_news(tweet):
                 CONTOR += 1
-                tweet = remove_irrelevant_keys(tweet)
                 db.filteredTweets.insert_one(tweet)
     return "done"
 
@@ -70,5 +85,3 @@ if __name__ == '__main__':
     t2.start()
     t1.join()
     t2.join()
-
-

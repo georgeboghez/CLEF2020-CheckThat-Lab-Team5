@@ -7,7 +7,6 @@ call
 hurry
 order
 purchase
-now
 guaranteed
 deals
 sale
@@ -24,12 +23,5 @@ winner
 follow
 like
 dm
-retweet
 delivery
-wts 
-shop now
-right
-
-
-
-
+wts
