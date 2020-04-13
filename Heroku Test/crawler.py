@@ -74,7 +74,6 @@ def getTweetsByUsers(user_ids, date_since, count):
 
 
 def autoInsertTweets(WAIT_TIME_SECONDS=3 * 3600, num=-1, route='http://ip2020.herokuapp.com/post'):
-    print(WAIT_TIME_SECONDS, num, route)
     if num == -1:
         while True:
             time.sleep(WAIT_TIME_SECONDS)
@@ -102,11 +101,6 @@ def main(dummyNumber=0):
     for i in range(len(countList)):
         sum += countList[i]
         getTweets(keyWordsList[i], "2020-03-20", countList[i])
-        print(sum, len(tweetList), countList[i], keyWordsList[i])
-
-    print(len(keyWordsList), len(countList))
-    print(len(tweetList))
-    print(sum)
 
     sum += dummyNumber
     if len(tweetList) != sum:
