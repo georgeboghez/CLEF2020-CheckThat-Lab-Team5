@@ -6,14 +6,16 @@ class TestCrawler(unittest.TestCase):
     def test_getTweets(self):
         self.assertTrue(crawler.getTweets("news", "2020-03-20", 2), "N-au fost gasite 2 tweet-uri.")
         self.assertFalse(crawler.getTweets("jdgsfjdgdiushighdoihgdioghdiodgh", "2020-03-20", 2),
-                         "A fost gasit un tweet care contine jdgsfjdgdiushighdoihgdioghdiodgh")
+                         "Received tweet with text: jdgsfjdgdiushighdoihgdioghdiodgh")
         self.assertRaises(ValueError, crawler.getTweets, "news", "2020-03-20", -1)
+        self.assertRaises(TypeError, crawler.getTweets, "news", "2020-03-20", "10")
+        self.assertRaises(TypeError, crawler.getTweets, 20, "2020-03-20", "5")
 
     def test_getTweetsByUsers(self):
         self.assertTrue(crawler.getTweetsByUsers(["NASA"], "2020-03-20", 2),
-                        "N-au fost gasite 2 tweet-uri de la utilizatorii NASA, Samsung.")
+                        "Couldn't receive 2 tweets from users NASA, Samsung.")
         self.assertTrue(crawler.getTweetsByUsers(["elonmusk", "JoeBiden"], "2020-03-20", 2),
-                        "N-au fost gasite 10 tweet-uri de la utilizatorii elonmusk, JoeBiden.")
+                        "Couldn't receive 10 tweets from users elonmusk, JoeBiden.")
         # self.assertFalse(crawler.getTweetsByUsers(["dfhid8787"], "2020-03-20", 10), "Au fost gasite tweet-uri de la dfhidfsuisdfhfuisfhui.")
         self.assertRaises(TypeError, crawler.getTweetsByUsers, "NASA", "2020-03-20", 2)
         self.assertRaises(ValueError, crawler.getTweetsByUsers, ["NASA"], "2020-03-20", -5)
