@@ -5,10 +5,9 @@ import crawler
 class TestCrawler(unittest.TestCase):
     def test_getTweets(self):
         self.assertTrue(crawler.getTweets("news", "2020-03-20", 2), "N-au fost gasite 2 tweet-uri.")
-        self.assertTrue(crawler.getTweets("news", "2020-03-20", 10), "N-au fost gasite 10 tweet-uri.")
-        # self.assertFalse(getTweets("news","2020-03-20",-1),"S-au preluat -1 tweet-uri noi.")
         self.assertFalse(crawler.getTweets("jdgsfjdgdiushighdoihgdioghdiodgh", "2020-03-20", 2),
                          "A fost gasit un tweet care contine jdgsfjdgdiushighdoihgdioghdiodgh")
+        self.assertRaises(ValueError, crawler.getTweets, "news", "2020-03-20", -1)
 
     def test_getTweetsByUsers(self):
         self.assertTrue(crawler.getTweetsByUsers(["NASA"], "2020-03-20", 2),
@@ -21,8 +20,8 @@ class TestCrawler(unittest.TestCase):
         self.assertRaises(TypeError, crawler.getTweetsByUsers, ["NASA"], "2020-03-20", "5")
 
     def test_autoInsertTweets(self):
-        self.assertTrue(crawler.autoInsertTweets(5, 2, "http://ip2020.herokuapp.com/post"), "Tweetlist neviabil")
-        self.assertRaises(ValueError, crawler.autoInsertTweets, 5, 2, "http://ip2020.herokuapp.com/nothing")
+        self.assertTrue(crawler.autoInsertTweets(5, 2, "http://localhost:5000/post"), "Tweetlist neviabil")
+        self.assertRaises(ValueError, crawler.autoInsertTweets, 5, 2, "http://localhost:5000/nothing")
 
     def test_main(self):
         self.assertFalse(crawler.main(1), "Numar insufient de tweet-uri")
