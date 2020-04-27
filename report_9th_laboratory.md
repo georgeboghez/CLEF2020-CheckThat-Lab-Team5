@@ -1,4 +1,4 @@
-# 8th Laboratory's Report
+# 9th Laboratory's Report
 
 
 ## Tanase Teofil:
@@ -28,14 +28,11 @@
 
 
 ## Placinta Radu:
--   Created unit testing for 2 functions from the crawler.py file ( getTweets and getTweetsByUsers);
-    
--   I ran into multiple problems trying to write the testing code correctly;
-    
--   For the next week I plan on improving/cleaning my code and collaborating with my team members in order to improve functionality and integration with the other teams’ modules;
--   Link to code (test_getTweets and test_getTweetsByUsers):
-    
--   [https://github.com/georgeboghez/CLEF2020-CheckThat-Lab-Team5/blob/master/Heroku%20Test/tests/test_crawler.py](https://github.com/georgeboghez/CLEF2020-CheckThat-Lab-Team5/blob/master/Heroku%20Test/tests/test_crawler.py)
+-   Completed this week:
+	- Improved the unit test for the getTweets function in the crawler.
+	- Translated the error messages to English.
+-   Plans for next week:
+	- To further optimize/clean the code.
 
 ## Boghez George:
 
