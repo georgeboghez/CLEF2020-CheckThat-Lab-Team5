@@ -4,7 +4,7 @@ import crawler
 
 class TestCrawler(unittest.TestCase):
     def test_getTweets(self):
-        self.assertTrue(crawler.getTweets("news", "2020-03-20", 2), "N-au fost gasite 2 tweet-uri.")
+        self.assertTrue(crawler.getTweets("news", "2020-03-20", 2), "Couldn't receive 2 tweets.")
         self.assertFalse(crawler.getTweets("jdgsfjdgdiushighdoihgdioghdiodgh", "2020-03-20", 2),
                          "Received tweet with text: jdgsfjdgdiushighdoihgdioghdiodgh")
         self.assertRaises(ValueError, crawler.getTweets, "news", "2020-03-20", -1)
