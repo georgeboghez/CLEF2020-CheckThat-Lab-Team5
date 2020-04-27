@@ -2,7 +2,7 @@
 from flask import Flask, render_template, request, redirect, jsonify
 from bson.json_util import dumps
 from pymongo import MongoClient
-from filter import is_news
+from classifier import is_news
 import threading
 import unittest
 import crawler

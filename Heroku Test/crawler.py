@@ -40,16 +40,15 @@ def getTweets(search_word, date_since, count):
 
     global tweetList
     length = len(tweetList)
-    tweetList += [json.dumps(tweet._json, indent=4, sort_keys=True)
-                  for tweet in (tw.Cursor(api.search,
-                                          q=search_word,
-                                          lang="en",
-                                          tweet_mode='extended',
-                                          since=date_since).items(count))]
+    for tweet in (tw.Cursor(api.search,
+                            q=search_word,
+                            lang="en",
+                            tweet_mode='extended',
+                            since=date_since).items(count)):
+        tweetList.append(json.dumps(tweet._json, indent=4, sort_keys=True))
     if len(tweetList) - length == count:
         return True
     return False
-    # raise ValueError("Nu s-au adaugat tweets")
 
 
 def getTweetsByUsers(user_ids, date_since, count):
@@ -63,11 +62,11 @@ def getTweetsByUsers(user_ids, date_since, count):
     global tweetList
     length = len(tweetList)
     for user in user_ids:
-        tweetList += [json.dumps(tweet._json, indent=4, sort_keys=True)
-                      for tweet in (tw.Cursor(api.user_timeline,
-                                              id=user,
-                                              tweet_mode='extended',
-                                              since=date_since).items(count))]
+        for tweet in (tw.Cursor(api.user_timeline,
+                                id=user,
+                                tweet_mode='extended',
+                                since=date_since).items(count)):
+            tweetList.append(json.dumps(tweet._json, indent=4, sort_keys=True))
     if len(tweetList) - length == count * len(user_ids):
         return True
     return False
@@ -79,15 +78,13 @@ def autoInsertTweets(WAIT_TIME_SECONDS=3 * 3600, num=-1, route='http://ip2020.he
             time.sleep(WAIT_TIME_SECONDS)
             response = requests.get(route)
             if response.status_code != 200:
-                print("eroare")
-                raise ValueError("Eroare la inserarea automata de tweet-uri")
+                raise ValueError("Error while auto-inserting tweets")
     else:
         while num > 0:
             time.sleep(WAIT_TIME_SECONDS)
             response = requests.get(route)
             if response.status_code != 200:
-                print("eroare")
-                raise ValueError("Eroare la inserarea automata de tweet-uri")
+                raise ValueError("Error while auto-inserting tweets")
             num -= 1
     return True
 
