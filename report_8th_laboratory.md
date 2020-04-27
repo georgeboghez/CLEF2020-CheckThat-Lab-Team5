@@ -11,13 +11,11 @@
 
 ## Bejenariu Razvan-Andrei:
 
--   Completed unit testing for functions in main especially the unfiltered tweets ones
-    
--   Created a new database for unfiltered tweets and new routes for unfiltered tweets (at the request of team 4)
-	- [Main](https://github.com/georgeboghez/CLEF2020-CheckThat-Lab-Team5/blob/master/Heroku%20Test/main.py)
-	- [Unit testing functions](https://github.com/georgeboghez/CLEF2020-CheckThat-Lab-Team5/blob/master/Heroku%20Test/tests/test_main.py)  	
--  Researching and learning unit testing in python, how to work with Flask routes.
- -  To continue to optimize the code and improve the app in general
+-   Translated error messages to English
+-   Used coverage to make sure unit testing covered over 80% of possible tests on main methods.     	
+-   Cleaned up code
+
+-  To continue to optimize the code and improve the app in general
 
 ## Roșu Cristian-Mihai:
 
