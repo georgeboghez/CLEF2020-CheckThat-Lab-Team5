@@ -31,8 +31,11 @@
 -   Completed this week:
 	- Improved the unit test for the getTweets function in the crawler.
 	- Translated the error messages to English.
+-   Issues:
+	- Ran into a few problems when writing the tests.
 -   Plans for next week:
 	- To further optimize/clean the code.
+	- Research related to testing, front-end design etc.
 
 ## Boghez George:
 
