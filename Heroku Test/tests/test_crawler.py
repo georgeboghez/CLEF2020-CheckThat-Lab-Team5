@@ -16,7 +16,6 @@ class TestCrawler(unittest.TestCase):
                         "Couldn't receive 2 tweets from users NASA, Samsung.")
         self.assertTrue(crawler.getTweetsByUsers(["elonmusk", "JoeBiden"], "2020-03-20", 2),
                         "Couldn't receive 10 tweets from users elonmusk, JoeBiden.")
-        # self.assertFalse(crawler.getTweetsByUsers(["dfhid8787"], "2020-03-20", 10), "Au fost gasite tweet-uri de la dfhidfsuisdfhfuisfhui.")
         self.assertRaises(TypeError, crawler.getTweetsByUsers, "NASA", "2020-03-20", 2)
         self.assertRaises(ValueError, crawler.getTweetsByUsers, ["NASA"], "2020-03-20", -5)
         self.assertRaises(TypeError, crawler.getTweetsByUsers, ["NASA"], "2020-03-20", "5")
