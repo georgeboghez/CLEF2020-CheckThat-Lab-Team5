@@ -22,11 +22,11 @@ class TestCrawler(unittest.TestCase):
         self.assertRaises(TypeError, crawler.getTweetsByUsers, ["NASA"], "2020-03-20", "5")
 
     def test_autoInsertTweets(self):
-        self.assertTrue(crawler.autoInsertTweets(5, 2, "http://localhost:5000/post"), "Tweetlist neviabil")
+        self.assertTrue(crawler.autoInsertTweets(5, 2, "http://localhost:5000/post"), "Non-viable tweetlist")
         self.assertRaises(ValueError, crawler.autoInsertTweets, 5, 2, "http://localhost:5000/nothing")
 
     def test_main(self):
-        self.assertFalse(crawler.main(1), "Numar insufient de tweet-uri")
+        self.assertFalse(crawler.main(1), "Insuficient number of tweets")
 
 
 if __name__ == '__main__':

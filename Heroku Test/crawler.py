@@ -79,13 +79,13 @@ def autoInsertTweets(WAIT_TIME_SECONDS=3 * 3600, num=-1, route='http://ip2020.he
             time.sleep(WAIT_TIME_SECONDS)
             response = requests.get(route)
             if response.status_code != 200:
-                raise ValueError("Eroare la inserarea automata de tweet-uri")
+                raise ValueError("Error while auto-inserting tweets")
     else:
         while num > 0:
             time.sleep(WAIT_TIME_SECONDS)
             response = requests.get(route)
             if response.status_code != 200:
-                raise ValueError("Eroare la inserarea automata de tweet-uri")
+                raise ValueError("Error while auto-inserting tweets")
             num -= 1
     return True
 
