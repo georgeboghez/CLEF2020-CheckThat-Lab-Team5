@@ -3,15 +3,12 @@
 
 ## Tanase Teofil:
 
--   Completed: Unit Testing for the crawler.py autoInsertTweets and main methods   
--   Issues: One difficulty I had was researching and figuring out how to use unit testing in python. Another issue I had was figuring out a method to test the autoInsertTweets method. Figuring out a way to test that all tweets had been passed from the main method was also an issue.
--   Plans for next week: cleaning up my code further, translating error messages into English and further optimising the methods.
+-Completion: Translation from Romanian to English on autoInsertTweets and main methods.
+	     Used coverage to make sure unit testing covered over 80% of possible tests on autoInsertTweets and main methods.
+	     Cleaned up code.
+	     Optimised main method.
+-To do: further optimise the code.
 
-_Because the autoInsertTweets method had an infinite “while” inside of it, the only way to efficiently test it was parametrizing it so that I can choose to only run the method for a certain time instead of the standard 3hour update interval used. This way I could check if there is any issue inserting tweets on a short term basis._
-
-_For the main method I decided to count the number of tweets that SHOULD be found in the tweetlist and compare it to the actual length of the tweetlist. 
-You can check the methods here as well as the Unit testing for both of them:
-[https://codeshare.io/amyOzo](https://codeshare.io/amyOzo)_
 ## Bejenariu Razvan-Andrei:
 
 -   Completed unit testing for functions in main especially the unfiltered tweets ones
