@@ -3,11 +3,13 @@
 
 ## Tanase Teofil:
 
--Completion: Translation from Romanian to English on autoInsertTweets and main methods.
-	     Used coverage to make sure unit testing covered over 80% of possible tests on autoInsertTweets and main methods.
-	     Cleaned up code.
-	     Optimised main method.
--To do: further optimise the code.
+Completion:
+-   Translation from Romanian to English on autoInsertTweets and main methods.
+-   Used coverage to make sure unit testing covered over 80% of possible tests on autoInsertTweets and main methods.
+-   Cleaned up code.
+-   Optimised main method.
+To do: 
+-   further optimise the code.
 
 ## Bejenariu Razvan-Andrei:
 
