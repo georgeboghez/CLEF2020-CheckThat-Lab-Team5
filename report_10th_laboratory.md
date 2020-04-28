@@ -53,5 +53,5 @@ To do:
 	-   Integrated the new filtering methods, which include the implementation of the Naive Bayes algorithm for filtering the tweets, alongside Ioan Sava
     
 -   Plans for next week: 
-	-   While integrating Ioan's algorithm, we noticed the request to introduce the tweets into the database takes longer than 30 seconds, therefore exceeding the heroku's request timeout and the job not having the needed time to insert all the tweets. I have done some research and found out we could solve this issue by creating  https://devcenter.heroku.com/articles/background-jobs-queueing, https://devcenter.heroku.com/articles/python-rq
+	-   While integrating Ioan's algorithm, we noticed the request to introduce the tweets into the database takes longer than 30 seconds, therefore exceeding the heroku's request timeout and the job not having the needed time to insert all the tweets. I have done some research and found out we could solve this issue by creating a background job https://devcenter.heroku.com/articles/background-jobs-queueing, https://devcenter.heroku.com/articles/python-rq
 	-   We're planning on starting the front-end development
