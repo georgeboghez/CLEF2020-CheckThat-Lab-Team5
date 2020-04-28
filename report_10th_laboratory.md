@@ -29,7 +29,7 @@ To do:
 ## Placinta Radu:
 -   Completed this week:
 	- Improved the unit test for the getTweets function in the crawler (now it tests more exceptions).
-	- Translated the error messages to English.
+	- Translated the error messages to English and cleaned up the code.
 -   Issues:
 	- Ran into a few problems when writing the tests.
 -   Plans for next week:
