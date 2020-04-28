@@ -21,12 +21,9 @@ To do:
 
 ## Roșu Cristian-Mihai:
 
--   Completed this week:
-    -   Unit tests for the all() and special() methods corresponding to “/all” and “/secret” routes in test_main.py - test_index() and test_special(), respectively ([Github](https://github.com/georgeboghez/CLEF2020-CheckThat-Lab-Team5/blob/master/Heroku%20Test/tests/test_main.py))
-    -   Help create a new database table for unfiltered tweets and new Flask routes relating to it - “/all_unfiltered_tweets” and “/all_unfiltered_tweets/<int:count>” - in main.py
-   -   Problems this week: Researching and adapting to unit test in python, ‘unittest’ specifically, and using them to test Flask routes
-    
--   Plans for next week: Further improve on unit tests and raise code coverage, as well as help our joining team with their filtering functionality
+-   Completed this week: Improved previous unit tests to raise code coverage in main.py
+-   Problems this week: Researching and adapting to unit test in python
+-   Plans for next week: Maintaint good code structure and planning
 
 
 ## Placinta Radu:
