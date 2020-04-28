@@ -42,15 +42,16 @@ To do:
 ## Boghez George:
 
 -   Completed this week:
-	-   Unit Testing for the main's Flask route ”/post” ([github code](https://github.com/georgeboghez/CLEF2020-CheckThat-Lab-Team5/blob/66acd811a143888fe38da1b14ac4dac5cbfa2177/Heroku%20Test/tests/test_main.py#L37))
+	-   Improved Unit Tests for enriching the coverage
     
-	-   Code review, quick fixes for the other tests, solved conflicts
+	-   Reviewed code, solved conflicts,  
+	
+	-   Made sure team 4 is constantly provided with tweets for training their algorithm having in mind to grow their dataset significantly
+	
+	-   Ensured other teams' members have access to the database, providing them corresponding information when needed 
+	
+	-   Integrated the new filtering methods, which include the implementation of the Naive Bayes algorithm for filtering the tweets, alongside Ioan Sava
     
-	-   Integration of the new updates from the filtering module alongside Ioan Sava
-    
-	-   New route for unfiltered tweets, a new table for them, and increased the number of tweets to retrieve ([github code - unfiltered_tweets, getCountUnfilteredTweets](https://github.com/georgeboghez/CLEF2020-CheckThat-Lab-Team5/blob/master/Heroku%20Test/main.py))
-    
-
--   Problems this week: Research for unit testing in python, integration of the new changes team 4 has made, respond to the filtering module team’s requests
-    
--   Plans for next week: Increase the performance of our service, give corresponding feedback to my teammates, work alongside team 4’s members in order to improve the filtering module, research for front-end
+-   Plans for next week: 
+	-   While integrating Ioan's algorithm, we noticed the request to introduce the tweets into the database takes longer than 30 seconds, therefore exceeding the heroku's request timeout and the job not having the needed time to insert all the tweets. I have done some research and found out we could solve this issue by creating  https://devcenter.heroku.com/articles/background-jobs-queueing, https://devcenter.heroku.com/articles/python-rq
+	-   We're planning on starting the front-end development
