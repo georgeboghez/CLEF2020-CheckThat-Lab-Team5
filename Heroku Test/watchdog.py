@@ -71,9 +71,10 @@ class MongoWatchdog:
     def serve(self):
         for change in self.tweets_change_stream:
             _id = str(change['documentKey']['_id'])
-            if change['operationType'] == "insert":
+            collection = change['ns']['coll']
+
+            if change['operationType'] == "insert" and (collection == "filteredTweets" or collection == "tweetsFeatures" or collection == "tweetsVerdict"):
                 status, id = getStatus(_id)
-                print(status)
                 if status == 3 or status == 2:
                     self.handleChange(id)
                 else:
@@ -81,10 +82,11 @@ class MongoWatchdog:
 
 
     def handleNew(self, id):
+        print("NEW TWEET")
         self.sendTrigger(self.channel, INSERTED_EVENT, id)
 
     def handleChange(self, id):
-        print("CHANGED")
+        print("CHANGED TWEET STATUS")
         self.sendTrigger(self.channel, CHANGED_EVENT, id)
     
 
