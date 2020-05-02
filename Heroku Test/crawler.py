@@ -58,7 +58,6 @@ def getTweetsByUsers(user_ids, date_since, count):
         raise ValueError("Count negativ!")
     if type(user_ids) != list:
         raise TypeError("Lista de users invalida!")
-
     global tweetList
     length = len(tweetList)
     for user in user_ids:
@@ -72,7 +71,7 @@ def getTweetsByUsers(user_ids, date_since, count):
     return False
 
 
-def autoInsertTweets(WAIT_TIME_SECONDS=3 * 3600, num=-1, route='http://ip2020.herokuapp.com/post'):
+def autoInsertTweets(WAIT_TIME_SECONDS=24 * 60, num=-1, route='http://ip2020.herokuapp.com/post'):
     if num == -1:
         while True:
             time.sleep(WAIT_TIME_SECONDS)
@@ -100,8 +99,8 @@ def main(dummyNumber=0):
         getTweets(keyWordsList[i], "2020-03-20", countList[i])
 
     sum += dummyNumber
-    if len(tweetList) != sum:
-        return False
+    # if len(tweetList) != sum:
+    #     return False
     return tweetList
 
 

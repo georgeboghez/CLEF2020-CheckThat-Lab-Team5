@@ -4,28 +4,20 @@ from bson.json_util import dumps
 from pymongo import MongoClient
 from classifier import is_news
 import threading
-import unittest
 import crawler
 import json
 import os
+
 
 MONGO_URL = 'mongodb://heroku_pp4rkrx5:9919l2jg2bmm0jrvf50oj8m3f3@ds141613.mlab.com:41613/heroku_pp4rkrx5?retryWrites=false'
 client = MongoClient(MONGO_URL)
 db = client.heroku_pp4rkrx5
 app = Flask(__name__)
 
-CONTOR = 0
-
 
 @app.route("/", methods=['GET'])
 def index():
-    global CONTOR
-    if CONTOR == 0:
-        return render_template('welcome.html')
-    tweetsList = db.filteredTweets.find().sort('_id', -1).limit(CONTOR)
-    tweetsList = list(tweetsList)
-    CONTOR = 0
-    return jsonify(dumps(tweetsList))
+    return render_template('welcome.html')
 
 
 @app.route("/all", methods=['GET'])
@@ -64,11 +56,12 @@ def special():
     return render_template('special.html')
 
 
-@app.route("/post", methods=['GET'])
-def post():
-    global CONTOR
+def insert_tweets():
+    # global CONTOR
+    CONTOR = 0
     tweetlist = crawler.main()
-    if tweetlist == False:
+
+    if tweetlist is False:
         return "invalid number of retrieved tweets"
     for tweet in tweetlist:
         tweet = json.loads(tweet)
@@ -78,7 +71,15 @@ def post():
             if is_news(tweet):
                 CONTOR += 1
                 db.filteredTweets.insert_one(tweet)
-    return "done"
+
+
+@app.route("/post", methods=['GET'])
+def post():
+    thread = threading.Thread(target=insert_tweets)
+    thread.daemon = True
+    thread.start()
+    return jsonify({'thread_name': str(thread.name),
+                    'started': True})
 
 
 if __name__ == '__main__':
