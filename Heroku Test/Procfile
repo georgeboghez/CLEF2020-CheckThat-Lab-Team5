@@ -1,2 +1,2 @@
 web: python main.py
-watchdog: python watchdog.py
+worker: python watchdog.py

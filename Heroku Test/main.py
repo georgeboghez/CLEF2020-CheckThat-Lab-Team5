@@ -4,6 +4,7 @@ from bson.json_util import dumps
 from bson.objectid import ObjectId
 from pymongo import MongoClient
 from classifier import is_news
+from flask_cors import CORS
 import threading
 import crawler
 import json
@@ -17,6 +18,10 @@ db = client.Tweets
 all_collection = db.filteredTweets
 features_collection = db.tweetsFeatures
 verdict_collection = db.tweetsVerdict
+
+app = Flask(__name__)
+CORS(app)
+
 
 def gatherTweetData(tweet):
     referencedID = str(tweet['_id'])
@@ -34,9 +39,6 @@ def gatherTweetData(tweet):
     return tweet
 
 
-app = Flask(__name__)
-
-
 @app.route("/", defaults={'u_path': ''})
 @app.route("/<path:u_path>")
 def catch_all(u_path):
@@ -50,6 +52,7 @@ def getTweets():
         documents.append(gatherTweetData(document))
     return json.dumps(documents)
 
+
 @app.route("/tweets/<path:id>")
 def getTweet(id):
     document = all_collection.find_one({"_id": ObjectId(id)})
@@ -57,7 +60,7 @@ def getTweet(id):
         return dumps(gatherTweetData(document))
     else:
         return abort(404, description="Resource not found")
-        
+
 
 @app.route("/all_unfiltered_tweets", methods=['GET'])
 def unfiltered_tweets():
@@ -71,7 +74,6 @@ def getCountUnfilteredTweets(count):
         raise ValueError("Count too big")
     tweetsList = list(db.unfilteredTweets.find().sort('_id', -1).limit(count))
     return jsonify(dumps(tweetsList))
-
 
 
 def insert_tweets():
