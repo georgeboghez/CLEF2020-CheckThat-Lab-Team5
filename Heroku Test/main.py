@@ -1,6 +1,7 @@
 #!/usr/bin/env python
-from flask import Flask, render_template, request, redirect, jsonify
+from flask import Flask, render_template, request, redirect, jsonify, abort
 from bson.json_util import dumps
+from bson.objectid import ObjectId
 from pymongo import MongoClient
 from classifier import is_news
 import threading
@@ -9,33 +10,54 @@ import json
 import os
 
 
-MONGO_URL = 'mongodb://heroku_pp4rkrx5:9919l2jg2bmm0jrvf50oj8m3f3@ds141613.mlab.com:41613/heroku_pp4rkrx5?retryWrites=false'
+MONGO_URL = 'mongodb+srv://watchdog:example@clef-uaic-svoxc.mongodb.net/test?retryWrites=true&w=majority'
 client = MongoClient(MONGO_URL)
-db = client.heroku_pp4rkrx5
+db = client.Tweets
+
+all_collection = db.filteredTweets
+features_collection = db.tweetsFeatures
+verdict_collection = db.tweetsVerdict
+
+def gatherTweetData(tweet):
+    referencedID = str(tweet['_id'])
+    tweet['_id'] = referencedID
+    features = features_collection.find_one({"reference": referencedID})
+    verdict = verdict_collection.find_one({"reference": referencedID})
+    if features is not None:
+        del features['_id']
+        del features['reference']
+        tweet['features'] = features
+    if verdict is not None:
+        del verdict['_id']
+        del verdict['reference']
+        tweet.update(verdict)
+    return tweet
+
+
 app = Flask(__name__)
 
 
-@app.route("/", methods=['GET'])
-def index():
-    return render_template('welcome.html')
+@app.route("/", defaults={'u_path': ''})
+@app.route("/<path:u_path>")
+def catch_all(u_path):
+    return "Hello! This is the catchall route. I guess you wanted to visit " + u_path
 
 
-@app.route("/all", methods=['GET'])
-def all():
-    try:
-        tweetsList = list(db.filteredTweets.find())
-    except:
-        raise MemoryError("Not enough memory")
-    return jsonify(dumps(tweetsList))
+@app.route("/tweets")
+def getTweets():
+    documents = []
+    for document in all_collection.find({}).limit(10):
+        documents.append(gatherTweetData(document))
+    return json.dumps(documents)
 
-
-@app.route("/all/<int:count>", methods=['GET'])
-def getCountTweets(count):
-    if count > db.filteredTweets.count_documents({}):
-        raise ValueError("Count too big")
-    tweetsList = list(db.filteredTweets.find().sort('_id', -1).limit(count))
-    return jsonify(dumps(tweetsList))
-
+@app.route("/tweets/<path:id>")
+def getTweet(id):
+    document = all_collection.find_one({"_id": ObjectId(id)})
+    if document is not None:
+        return dumps(gatherTweetData(document))
+    else:
+        return abort(404, description="Resource not found")
+        
 
 @app.route("/all_unfiltered_tweets", methods=['GET'])
 def unfiltered_tweets():
@@ -50,10 +72,6 @@ def getCountUnfilteredTweets(count):
     tweetsList = list(db.unfilteredTweets.find().sort('_id', -1).limit(count))
     return jsonify(dumps(tweetsList))
 
-
-@app.route("/secret", methods=['GET'])
-def special():
-    return render_template('special.html')
 
 
 def insert_tweets():
