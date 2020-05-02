@@ -6,7 +6,7 @@ from bson.objectid import ObjectId
 
 app = Flask(__name__)
 
-db = pymongo.MongoClient("mongodb://watchdogUnprocessed:example@debian/Tweets").Tweets
+db = pymongo.MongoClient("mongodb+srv://watchdog:example@clef-uaic-svoxc.mongodb.net/test?retryWrites=true&w=majority").Tweets
 all_collection = db.filteredTweets
 features_collection = db.tweetsFeatures
 verdict_collection = db.tweetsVerdict
@@ -20,7 +20,7 @@ def gatherTweetData(tweet):
     if features is not None:
         del features['_id']
         del features['reference']
-        tweet.update(features)
+        tweet['features'] = features
     if verdict is not None:
         del verdict['_id']
         del verdict['reference']
@@ -35,7 +35,7 @@ def catch_all(u_path):
 @app.route("/api/tweets")
 def getTweets():
     documents = []
-    for document in all_collection.find({}):
+    for document in all_collection.find({}).limit(10):
         documents.append(gatherTweetData(document))
     return json.dumps(documents)
 
@@ -49,3 +49,6 @@ def getTweet(id):
 
 
 app.run(host='0.0.0.0')
+
+
+# http://localhost:5000/api/tweets/5ea2e8cbe472eecfa5aaf3a3

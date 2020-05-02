@@ -15,7 +15,7 @@ pusher_client = pusher.Pusher(
   ssl=True
 )
 
-db = pymongo.MongoClient("mongodb://watchdogUnprocessed:example@debian/Tweets").Tweets
+db = pymongo.MongoClient("mongodb+srv://watchdog:example@clef-uaic-svoxc.mongodb.net/test?retryWrites=true&w=majority").Tweets
 
 def exists(_id):
     cursor = db.filteredTweets.find({'_id': ObjectId(_id)})
