@@ -92,8 +92,9 @@ def insert_tweets():
             if is_news(tweet):
                 CONTOR += 1
                 db.filteredTweets.insert_one(tweet)
-
-    r = requests.post('https://nlp-module.herokuapp.com/process', json={"count": CONTOR})
+    response = requests.post(
+        'https://nlp-module.herokuapp.com/process', json={"count": CONTOR})
+    print(response.status_code, response.text)
 
 
 @app.route("/post", methods=['GET'])
