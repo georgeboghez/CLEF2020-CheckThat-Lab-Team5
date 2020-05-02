@@ -6,6 +6,7 @@ from pymongo import MongoClient
 from classifier import is_news
 from flask_cors import CORS
 import threading
+import requests
 import crawler
 import json
 import os
@@ -91,6 +92,8 @@ def insert_tweets():
             if is_news(tweet):
                 CONTOR += 1
                 db.filteredTweets.insert_one(tweet)
+
+    r = requests.post('https://nlp-module.herokuapp.com/process', json={"count": CONTOR})
 
 
 @app.route("/post", methods=['GET'])
