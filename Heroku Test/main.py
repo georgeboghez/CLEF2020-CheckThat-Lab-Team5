@@ -1,13 +1,13 @@
 #!/usr/bin/env python
-from flask import Flask, render_template, request, redirect, jsonify, abort
-from bson.json_util import dumps
+from flask import Flask, jsonify, abort
 from bson.objectid import ObjectId
+from bson.json_util import dumps
 from pymongo import MongoClient
-from classifier import is_news
 from flask_cors import CORS
+from watchdog import conn
+from rq import Queue
 import threading
-import requests
-import crawler
+import utils
 import json
 import os
 
@@ -22,6 +22,8 @@ verdict_collection = db.tweetsVerdict
 
 app = Flask(__name__)
 CORS(app)
+
+q = Queue(connection=conn)
 
 
 def gatherTweetData(tweet):
@@ -77,41 +79,20 @@ def getCountUnfilteredTweets(count):
     return jsonify(dumps(tweetsList))
 
 
-def insert_tweets():
-    # global CONTOR
-    CONTOR = 0
-    tweetlist = crawler.main()
-
-    if tweetlist is False:
-        return "invalid number of retrieved tweets"
-    for tweet in tweetlist:
-        tweet = json.loads(tweet)
-        tweet2 = db.filteredTweets.find_one({"id_str": tweet['id_str']})
-        if not tweet2:
-            db.unfilteredTweets.insert_one(tweet)
-            if is_news(tweet):
-                CONTOR += 1
-                db.filteredTweets.insert_one(tweet)
-    response = requests.post(
-        'https://nlp-module.herokuapp.com/process', json={"count": CONTOR})
-    print(response.status_code, response.text)
-
-
 @app.route("/post", methods=['GET'])
 def post():
-    thread = threading.Thread(target=insert_tweets)
-    thread.daemon = True
-    thread.start()
-    return jsonify({'thread_name': str(thread.name),
-                    'started': True})
+    result = q.enqueue_call(utils.insert_tweets, timeout=15 * 60)
+    print(result)
+    return jsonify({"Insert status": "started"})
 
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
+    # app.run('0.0.0.0', port)
     t1 = threading.Thread(target=app.run, args=('0.0.0.0', port))
     t1.start()
     # app.run(host='0.0.0.0', port=port)
-    t2 = threading.Thread(target=crawler.autoInsertTweets)
+    t2 = threading.Thread(target=utils.auto_insert_tweets)
     t2.start()
     t1.join()
     t2.join()

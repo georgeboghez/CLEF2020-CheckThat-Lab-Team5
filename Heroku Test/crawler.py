@@ -71,24 +71,7 @@ def getTweetsByUsers(user_ids, date_since, count):
     return False
 
 
-def autoInsertTweets(WAIT_TIME_SECONDS=24 * 60, num=-1, route='http://ip2020.herokuapp.com/post'):
-    if num == -1:
-        while True:
-            time.sleep(WAIT_TIME_SECONDS)
-            response = requests.get(route)
-            if response.status_code != 200:
-                raise ValueError("Error while auto-inserting tweets")
-    else:
-        while num > 0:
-            time.sleep(WAIT_TIME_SECONDS)
-            response = requests.get(route)
-            if response.status_code != 200:
-                raise ValueError("Error while auto-inserting tweets")
-            num -= 1
-    return True
-
-
-def main(dummyNumber=0):
+def gatherTweets(dummyNumber=0):
     global tweetList, countList, userList, keyWordsList
 
     getTweetsByUsers(userList, "2020-03-20", 4)
@@ -102,7 +85,3 @@ def main(dummyNumber=0):
     # if len(tweetList) != sum:
     #     return False
     return tweetList
-
-
-if __name__ == '__main__':
-    main()

@@ -1,11 +1,22 @@
+from rq import Worker, Queue, Connection
+from bson.objectid import ObjectId
+import threading
 import pymongo
 import pusher
-from bson.objectid import ObjectId
+import redis
+import os
 
 
 BEFORE_CHANNEL = 'DEFAULT'
 CHANGED_EVENT = "CHANGED"
 INSERTED_EVENT = "INSERTED"
+
+listen = ['high', 'default', 'low']
+
+redis_url = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')
+
+conn = redis.from_url(redis_url)
+
 
 pusher_client = pusher.Pusher(
     app_id='992704',
@@ -97,5 +108,15 @@ class MongoWatchdog:
         pusher_client.trigger(channel, event, {'id': id})
 
 
-watchdog = MongoWatchdog(BEFORE_CHANNEL)
-watchdog.serve()
+def watchdog_serve():
+    watchdog = MongoWatchdog(BEFORE_CHANNEL)
+    watchdog.serve()
+
+
+if __name__ == '__main__':
+    t1 = threading.Thread(target=watchdog_serve)
+    t1.start()
+    with Connection(conn):
+        worker = Worker(map(Queue, listen))
+        worker.work()
+    t1.join()
