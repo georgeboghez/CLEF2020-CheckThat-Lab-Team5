@@ -1,4 +1,4 @@
-# 10th Laboratory's Report
+# 11th Laboratory's Report
 
 
 ## Tanase Teofil:
@@ -28,13 +28,12 @@ To do:
 
 ## Placinta Radu:
 -   Completed this week:
-	- Improved the unit test for the getTweets function in the crawler (now it tests more exceptions).
-	- Translated the error messages to English and cleaned up the code.
--   Issues:
-	- Ran into a few problems when writing the tests.
+	-Added a POST request (along with Razvan) in order to send the number of new tweets to Alexandru Oloieri's module
+	-Cleaned up, rearranged the code
+
 -   Plans for next week:
 	- To further optimize/clean the code.
-	- Research related to testing, front-end design etc.
+	- Research related to REST, front-end design etc.
 
 ## Boghez George:
 
