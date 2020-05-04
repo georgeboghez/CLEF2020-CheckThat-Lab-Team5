@@ -23,7 +23,7 @@ To do:
 
 -   Completed this week: 
     - Helped add a data insertion detection functionality alongside George and Cătălin
-    - Removed some unnecessary Flask routes: */all* and */all/<count>* 
+    - Removed some unnecessary Flask routes: */all* and */all/count* 
 -   Problems this week: Migrating a part of our tables from mLab to AWS for portability
 -   Plans for next week: Efficiently divide work among the cooperating teams and help the frontend
 
