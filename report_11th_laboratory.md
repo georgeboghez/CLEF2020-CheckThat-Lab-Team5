@@ -28,8 +28,9 @@ To do:
 
 ## Placinta Radu:
 -   Completed this week:
-	-Added a POST request (along with Razvan) in order to send the number of new tweets to Alexandru Oloieri's module
-	-Cleaned up, rearranged the code
+	- Added a POST request (along with Razvan) in order to send the number of new tweets to Alexandru Oloieri's module
+	
+	- Cleaned up, rearranged the code
 
 -   Plans for next week:
 	- To further optimize/clean the code.
