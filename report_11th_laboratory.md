@@ -4,12 +4,12 @@
 ## Tanase Teofil:
 
 Completion:
--   Translation from Romanian to English on autoInsertTweets and main methods.
--   Used coverage to make sure unit testing covered over 80% of possible tests on autoInsertTweets and main methods.
--   Cleaned up code.
--   Optimised main method.
+- Created the design.psd of the platform alongside Elisa Giurgea.
+- Added code for multi-threaded auto insertion of the tweets alongside George, Razvan and Radu.
+
 To do: 
--   further optimise the code.
+- Further optimise the code and help my team.
+- To help on the front-end side.
 
 ## Bejenariu Razvan-Andrei:
 
