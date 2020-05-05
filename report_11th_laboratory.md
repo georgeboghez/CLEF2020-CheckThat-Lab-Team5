@@ -16,7 +16,7 @@ To do:
 Completed:
 
 -   Added a POST request with Radu in order to send the number of new tweets to Alexandru Oloieri's module
--   Added code for multi-threading using background tasks alongside George, Razvan and Radu.    	
+-   Added code for multi-threading using background tasks alongside George, Teofil and Radu.    	
 
 To do:
 
