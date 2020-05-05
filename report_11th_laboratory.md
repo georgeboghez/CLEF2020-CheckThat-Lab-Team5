@@ -13,11 +13,14 @@ To do:
 
 ## Bejenariu Razvan-Andrei:
 
--   Translated error messages to English
--   Used coverage to make sure unit testing covered over 80% of possible tests on main methods.     	
--   Cleaned up code
+Completed:
 
--  To continue to optimize the code and improve the app in general
+-   Added a POST request with Radu in order to send the number of new tweets to Alexandru Oloieri's module
+-   Added code for multi-threading using background tasks alongside George, Razvan and Radu.    	
+
+To do:
+
+-  Use coverage to make sure unit testing covered over 80% of possible tests.
 
 ## Roșu Cristian-Mihai:
 
