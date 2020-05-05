@@ -5,7 +5,7 @@
 
 Completion:
 - Created the design.psd of the platform alongside Elisa Giurgea.
-- Added code for multi-threaded auto insertion of the tweets alongside George, Razvan and Radu.
+- Added code for multi-threading using background tasks alongside George, Razvan and Radu.
 
 To do: 
 - Further optimise the code and help my team.
