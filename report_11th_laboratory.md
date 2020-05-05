@@ -42,18 +42,15 @@ To do:
 	- Research related to REST, front-end design etc.
 
 ## Boghez George:
-
 -   Completed this week:
-	-   Improved Unit Tests for enriching the coverage
-    
-	-   Reviewed code, solved conflicts,  
+	-   Assigned tasks to my teammates after getting all the necessary information from the conversations we had with the other team
 	
-	-   Made sure team 4 is constantly provided with tweets for training their algorithm having in mind to grow their dataset significantly
+	-   Integrated alongside Cristian Rosu and Catalin Sumanaru a functionality for listening the new events that occur on a database (in order to send the data dynamically to the frontend component)
 	
-	-   Ensured other teams' members have access to the database, providing them corresponding information when needed 
+	-   The mentioned integration required a database migration (from mLab to AWS, mainly made by Catalin) because the database I created and we used with a free plan didn't grant us root privileges, and we made sure everything works as expected
 	
-	-   Integrated the new filtering methods, which include the implementation of the Naive Bayes algorithm for filtering the tweets, alongside Ioan Sava
-    
+	-   Created a multithreading way of inserting tweets into the database (in order to fix the unexpected of heroku, which used to stop the insertion after 30 seconds) alongside Razvan Bejenariu, Radu Placinta and Teofil Tanase. Then, I had to revisit the code and implement a background task in python with rq https://devcenter.heroku.com/articles/python-rq
+	
+	-   Reviewed other members' work
 -   Plans for next week: 
-	-   While integrating Ioan's algorithm, we noticed the request to introduce the tweets into the database takes longer than 30 seconds, therefore exceeding the heroku's request timeout and the job not having the needed time to insert all the tweets. I have done some research and found out we could solve this issue by creating a background job https://devcenter.heroku.com/articles/background-jobs-queueing, https://devcenter.heroku.com/articles/python-rq
-	-   We're planning on starting the front-end development
+	-   Unit testing for the code we have written over the past week
