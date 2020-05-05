@@ -54,3 +54,4 @@ To do:
 	-   Reviewed other members' work
 -   Plans for next week: 
 	-   Unit testing for the code we have written over the past week
+	-   Lend a hand to the other team if necessary
