@@ -19,15 +19,48 @@ userList = ["EU_Comission", "realDonaldTrump", "BernieSanders",
             "JoeBiden", "elonmusk", "tconnellyRTE",
             "BarackObama", "Samsung", "NASA"]
 
-countList = [10, 10, 4, 6, 4, 50, 20, 6, 15, 15, 15, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-             2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
-
-keyWordsList = ["coronavirus", "#ad", "economy", "olympic games", "russia", "#europe", "#breaking-news", "news",
-                "pope", "china", "#newjob", "#jobs", "hiring", "applynow", "jobs", "job", "career", "jobsearch",
-                "Vacancies", "recruitment", "NewJob", "nowhiring", "LookingForWork", "Fulltime", "wearehiring",
-                "findjob", "vacancy", "breakingnews", "latestnews", "newsupdate", "newsdesk", "trendingnews",
-                "weatherforcast", "forcast", "nsweather", "cunt", "fuck", "hell", "fag", "customer", "delivery",
-                "deals"]
+keyWords = {"coronavirus": 10,
+                "#ad": 10,
+                "economy": 4,
+                "olympic games": 6,
+                "russia": 4,
+                "#europe": 50,
+                "#breaking-news": 20,
+                "news": 6,
+                "pope": 15,
+                "china": 15,
+                "#newjob": 15,
+                "#jobs": 2,
+                "hiring": 2,
+                "applynow": 2,
+                "jobs": 2,
+                "job": 2,
+                "career": 2,
+                "jobsearch": 2,
+                "Vacancies": 2,
+                "recruitment": 2,
+                "NewJob": 2,
+                "nowhiring": 2,
+                "LookingForWork": 2,
+                "Fulltime": 2,
+                "wearehiring": 2,
+                "findjob": 2,
+                "vacancy": 2,
+                "breakingnews": 2,
+                "latestnews": 2,
+                "newsupdate": 2,
+                "newsdesk": 2,
+                "trendingnews": 2,
+                "weatherforcast": 2,
+                "forcast": 2,
+                "nsweather": 2,
+                "cunt": 2,
+                "fuck": 2,
+                "hell": 2,
+                "fag": 2,
+                "customer": 2,
+                "delivery": 2,
+                "deals": 2}
 
 
 def getTweets(search_word, date_since, count):
@@ -72,14 +105,14 @@ def getTweetsByUsers(user_ids, date_since, count):
 
 
 def gatherTweets(dummyNumber=0):
-    global tweetList, countList, userList, keyWordsList
+    global tweetList, countList, userList, keyWords
 
     getTweetsByUsers(userList, "2020-03-20", 4)
 
     sum = len(tweetList)
-    for i in range(len(countList)):
-        sum += countList[i]
-        getTweets(keyWordsList[i], "2020-03-20", countList[i])
+    for key in keyWords:
+        sum += key
+        getTweets(key, "2020-03-20", keyWords[key])
 
     sum += dummyNumber
     # if len(tweetList) != sum:
