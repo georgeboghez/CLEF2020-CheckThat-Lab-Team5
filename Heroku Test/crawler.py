@@ -1,8 +1,5 @@
 import tweepy as tw
-import requests
 import json
-import time
-import os
 
 CONSUMER_KEY = 'CmQS1BFO5D38aYu38isgYfQSM'
 CONSUMER_SECRET = '0BT4Pvkox9y4USuKmzsh6IzzfymdMcPrCKANnYVc82qXZMRn7D'
@@ -64,6 +61,8 @@ keyWords = {"coronavirus": 10,
 
 
 def getTweets(search_word, date_since, count):
+    global tweetList
+
     if count < 0:
         raise ValueError("Count negativ!")
     if type(count) != int:
@@ -71,7 +70,6 @@ def getTweets(search_word, date_since, count):
     if type(search_word) != str:
         raise TypeError("Search word nu este string!")
 
-    global tweetList
     length = len(tweetList)
     for tweet in (tw.Cursor(api.search,
                             q=search_word,
@@ -108,10 +106,9 @@ def gatherTweets(dummyNumber=0):
     global tweetList, userList, keyWords
 
     getTweetsByUsers(userList, "2020-03-20", 4)
-
     sum = len(tweetList)
     for key in keyWords:
-        sum += key
+        sum += keyWords[key]
         getTweets(key, "2020-03-20", keyWords[key])
 
     sum += dummyNumber
