@@ -11,7 +11,6 @@ import utils
 import json
 import os
 
-
 MONGO_URL = 'mongodb+srv://watchdog:example@clef-uaic-svoxc.mongodb.net/test?retryWrites=true&w=majority'
 client = MongoClient(MONGO_URL)
 db = client.Tweets
@@ -26,22 +25,6 @@ CORS(app)
 q = Queue(connection=conn)
 
 
-def gatherTweetData(tweet):
-    referencedID = str(tweet['_id'])
-    tweet['_id'] = referencedID
-    features = features_collection.find_one({"reference": referencedID})
-    verdict = verdict_collection.find_one({"reference": referencedID})
-    if features is not None:
-        del features['_id']
-        del features['reference']
-        tweet['features'] = features
-    if verdict is not None:
-        del verdict['_id']
-        del verdict['reference']
-        tweet.update(verdict)
-    return tweet
-
-
 @app.route("/", defaults={'u_path': ''})
 @app.route("/<path:u_path>")
 def catch_all(u_path):
@@ -52,7 +35,7 @@ def catch_all(u_path):
 def getTweets():
     documents = []
     for document in all_collection.find({}).limit(10):
-        documents.append(gatherTweetData(document))
+        documents.append(utils.gatherTweetData(document))
     return json.dumps(documents)
 
 
@@ -60,7 +43,7 @@ def getTweets():
 def getTweet(id):
     document = all_collection.find_one({"_id": ObjectId(id)})
     if document is not None:
-        return dumps(gatherTweetData(document))
+        return dumps(utils.gatherTweetData(document))
     else:
         return abort(404, description="Resource not found")
 
