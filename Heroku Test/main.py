@@ -65,18 +65,18 @@ def getTweet(id):
         return abort(404, description="Resource not found")
 
 
-@app.route("/all_unfiltered_tweets", methods=['GET'])
-def unfiltered_tweets():
-    tweetsList = list(db.unfilteredTweets.find())
-    return jsonify(dumps(tweetsList))
+# @app.route("/all_unfiltered_tweets", methods=['GET'])
+# def unfiltered_tweets():
+#     tweetsList = list(db.unfilteredTweets.find())
+#     return jsonify(dumps(tweetsList))
 
 
-@app.route("/all_unfiltered_tweets/<int:count>", methods=['GET'])
-def getCountUnfilteredTweets(count):
-    if count > db.unfilteredTweets.count_documents({}):
-        raise ValueError("Count too big")
-    tweetsList = list(db.unfilteredTweets.find().sort('_id', -1).limit(count))
-    return jsonify(dumps(tweetsList))
+# @app.route("/all_unfiltered_tweets/<int:count>", methods=['GET'])
+# def getCountUnfilteredTweets(count):
+#     if count > db.unfilteredTweets.count_documents({}):
+#         raise ValueError("Count too big")
+#     tweetsList = list(db.unfilteredTweets.find().sort('_id', -1).limit(count))
+#     return jsonify(dumps(tweetsList))
 
 
 @app.route("/post", methods=['GET'])
