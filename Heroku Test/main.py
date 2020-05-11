@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from flask import Flask, jsonify, abort
+from flask import Flask, jsonify, abort, request
 from bson.objectid import ObjectId
 from bson.json_util import dumps
 from pymongo import MongoClient
@@ -10,6 +10,7 @@ import threading
 import utils
 import json
 import os
+import string
 
 MONGO_URL = 'mongodb+srv://watchdog:example@clef-uaic-svoxc.mongodb.net/test?retryWrites=true&w=majority'
 client = MongoClient(MONGO_URL)
@@ -30,9 +31,22 @@ def catch_all(u_path):
 
 @app.route("/tweets")
 def getTweets():
+    skip_param = str(request.args.get('skip'))
+    limit_param = str(request.args.get('limit'))
+
+    if skip_param is None or limit_param is None:
+        return abort(400)
+    
+    if skip_param.isnumeric() == False or limit_param.isnumeric() == False:
+        return abort(400)
+
+    skip_param = int(skip_param)
+    limit_param = int(limit_param)
+
     documents = []
-    for document in utils.all_collection.find({}).limit(10):
+    for document in utils.all_collection.find({}).skip(skip_param).limit(limit_param):
         documents.append(utils.gatherTweetData(document))
+
     return json.dumps(documents)
 
 
