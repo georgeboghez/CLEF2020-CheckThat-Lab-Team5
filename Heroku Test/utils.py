@@ -1,3 +1,4 @@
+from main import features_collection, verdict_collection
 from pymongo import MongoClient
 from classifier import is_news
 from watchdog import conn
@@ -6,6 +7,7 @@ import requests
 import crawler
 import json
 import time
+import nltk
 
 MONGO_URL = 'mongodb+srv://watchdog:example@clef-uaic-svoxc.mongodb.net/test?retryWrites=true&w=majority'
 client = MongoClient(MONGO_URL)
@@ -42,7 +44,7 @@ def insert_tweets():
     return False
 
 
-def auto_insert_tweets(WAIT_TIME_SECONDS=20 * 60, num=-1):
+def auto_insert_tweets(WAIT_TIME_SECONDS=5, num=-1):
     if num == -1:
         while True:
             time.sleep(WAIT_TIME_SECONDS)
@@ -54,6 +56,7 @@ def auto_insert_tweets(WAIT_TIME_SECONDS=20 * 60, num=-1):
             result = q.enqueue_call(insert_tweets, timeout=15 * 60)
             num -= 1
     return True
+
 
 def gatherTweetData(tweet):
     referencedID = str(tweet['_id'])

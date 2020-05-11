@@ -11,7 +11,6 @@ import utils
 import json
 import os
 
-
 MONGO_URL = 'mongodb+srv://watchdog:example@clef-uaic-svoxc.mongodb.net/test?retryWrites=true&w=majority'
 client = MongoClient(MONGO_URL)
 db = client.Tweets
