@@ -1,4 +1,3 @@
-from main import features_collection, verdict_collection
 from pymongo import MongoClient
 from classifier import is_news
 from watchdog import conn
@@ -7,7 +6,7 @@ import requests
 import crawler
 import json
 import time
-import nltk
+
 
 MONGO_URL = 'mongodb+srv://watchdog:example@clef-uaic-svoxc.mongodb.net/test?retryWrites=true&w=majority'
 client = MongoClient(MONGO_URL)

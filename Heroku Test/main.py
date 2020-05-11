@@ -15,6 +15,7 @@ MONGO_URL = 'mongodb+srv://watchdog:example@clef-uaic-svoxc.mongodb.net/test?ret
 client = MongoClient(MONGO_URL)
 db = client.Tweets
 
+
 app = Flask(__name__)
 CORS(app)
 
@@ -38,10 +39,7 @@ def getTweets():
 @app.route("/tweets/<path:id>")
 def getTweet(id):
     document = utils.all_collection.find_one({"_id": ObjectId(id)})
-    if document is not None:
-        return dumps(utils.gatherTweetData(document))
-    else:
-        return abort(404, description="Resource not found")
+    return dumps(utils.gatherTweetData(document))
 
 
 # @app.route("/all_unfiltered_tweets", methods=['GET'])
@@ -61,7 +59,7 @@ def getTweet(id):
 @app.route("/post", methods=['GET'])
 def post():
     result = q.enqueue_call(utils.insert_tweets, timeout=15 * 60)
-    #print(result)
+    print(result)
     return jsonify({"Insert status": "started"})
 
 
