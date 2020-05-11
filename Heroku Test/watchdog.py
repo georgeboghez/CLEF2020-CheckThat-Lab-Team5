@@ -95,6 +95,10 @@ class MongoWatchdog:
                     self.handleChange(id)
                 else:
                     self.handleNew(id)
+            elif change['operationType'] == "replace" and collection == "tweetsVerdict":
+                status, id = getStatus(_id)
+                if status == 3 or status == 2:
+                    self.handleChange(id)
 
     def handleNew(self, id):
         print("NEW TWEET")
@@ -120,3 +124,4 @@ if __name__ == '__main__':
         worker = Worker(map(Queue, listen))
         worker.work()
     t1.join()
+
