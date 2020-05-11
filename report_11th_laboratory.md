@@ -1,4 +1,4 @@
-# 11th Laboratory's Report
+# 11 & 12th Laboratory's Report
 
 
 ## Tanase Teofil:
@@ -15,12 +15,9 @@ To do:
 
 Completed:
 
--   Added a POST request with Radu in order to send the number of new tweets to Alexandru Oloieri's module
--   Added code for multi-threading using background tasks alongside George, Teofil and Radu.    	
-
-To do:
-
--  Use coverage to make sure unit testing covered over 80% of possible tests.
+-   Added a POST request with Radu in order to send the number of new tweets to Alexandru Oloieri's module (week 11)
+-   Added code for multi-threading using background tasks alongside George, Teofil and Radu.  (week 11)  	
+-   Wrote unit testing for the 'new code' to raise code coverage in main.py (week 12)
 
 ## Roșu Cristian-Mihai:
 
