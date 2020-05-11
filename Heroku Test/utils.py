@@ -43,7 +43,7 @@ def insert_tweets():
     return False
 
 
-def auto_insert_tweets(WAIT_TIME_SECONDS=5, num=-1):
+def auto_insert_tweets(WAIT_TIME_SECONDS=20 * 60, num=-1):
     if num == -1:
         while True:
             time.sleep(WAIT_TIME_SECONDS)
