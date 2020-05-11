@@ -7,9 +7,14 @@ import crawler
 import json
 import time
 
+
 MONGO_URL = 'mongodb+srv://watchdog:example@clef-uaic-svoxc.mongodb.net/test?retryWrites=true&w=majority'
 client = MongoClient(MONGO_URL)
 db = client.Tweets
+
+all_collection = db.filteredTweets
+features_collection = db.tweetsFeatures
+verdict_collection = db.tweetsVerdict
 
 q = Queue(connection=conn)
 
@@ -33,9 +38,12 @@ def insert_tweets():
     response = requests.post(
         'https://nlp-module.herokuapp.com/process', json={"count": CONTOR})
     print(response.status_code, response.text)
+    if response.json()["response"] == "ok":
+        return True
+    return False
 
 
-def auto_insert_tweets(WAIT_TIME_SECONDS=20 * 60, num=-1):
+def auto_insert_tweets(WAIT_TIME_SECONDS=5, num=-1):
     if num == -1:
         while True:
             time.sleep(WAIT_TIME_SECONDS)
@@ -47,3 +55,19 @@ def auto_insert_tweets(WAIT_TIME_SECONDS=20 * 60, num=-1):
             result = q.enqueue_call(insert_tweets, timeout=15 * 60)
             num -= 1
     return True
+
+
+def gatherTweetData(tweet):
+    referencedID = str(tweet['_id'])
+    tweet['_id'] = referencedID
+    features = features_collection.find_one({"reference": referencedID})
+    verdict = verdict_collection.find_one({"reference": referencedID})
+    if features is not None:
+        del features['_id']
+        del features['reference']
+        tweet['features'] = features
+    if verdict is not None:
+        del verdict['_id']
+        del verdict['reference']
+        tweet.update(verdict)
+    return tweet
