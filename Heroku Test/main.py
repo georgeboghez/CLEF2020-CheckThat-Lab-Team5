@@ -16,30 +16,10 @@ MONGO_URL = 'mongodb+srv://watchdog:example@clef-uaic-svoxc.mongodb.net/test?ret
 client = MongoClient(MONGO_URL)
 db = client.Tweets
 
-all_collection = db.filteredTweets
-features_collection = db.tweetsFeatures
-verdict_collection = db.tweetsVerdict
-
 app = Flask(__name__)
 CORS(app)
 
 q = Queue(connection=conn)
-
-
-def gatherTweetData(tweet):
-    referencedID = str(tweet['_id'])
-    tweet['_id'] = referencedID
-    features = features_collection.find_one({"reference": referencedID})
-    verdict = verdict_collection.find_one({"reference": referencedID})
-    if features is not None:
-        del features['_id']
-        del features['reference']
-        tweet['features'] = features
-    if verdict is not None:
-        del verdict['_id']
-        del verdict['reference']
-        tweet.update(verdict)
-    return tweet
 
 
 @app.route("/", defaults={'u_path': ''})
@@ -51,16 +31,16 @@ def catch_all(u_path):
 @app.route("/tweets")
 def getTweets():
     documents = []
-    for document in all_collection.find({}).limit(10):
-        documents.append(gatherTweetData(document))
+    for document in utils.all_collection.find({}).limit(10):
+        documents.append(utils.gatherTweetData(document))
     return json.dumps(documents)
 
 
 @app.route("/tweets/<path:id>")
 def getTweet(id):
-    document = all_collection.find_one({"_id": ObjectId(id)})
+    document = utils.all_collection.find_one({"_id": ObjectId(id)})
     if document is not None:
-        return dumps(gatherTweetData(document))
+        return dumps(utils.gatherTweetData(document))
     else:
         return abort(404, description="Resource not found")
 
@@ -82,7 +62,7 @@ def getTweet(id):
 @app.route("/post", methods=['GET'])
 def post():
     result = q.enqueue_call(utils.insert_tweets, timeout=15 * 60)
-    print(result)
+    #print(result)
     return jsonify({"Insert status": "started"})
 
 
