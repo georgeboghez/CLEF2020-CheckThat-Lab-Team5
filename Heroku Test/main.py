@@ -36,7 +36,7 @@ def getTweets():
 
     if skip_param is None or limit_param is None:
         return abort(400)
-    
+
     if skip_param.isnumeric() == False or limit_param.isnumeric() == False:
         return abort(400)
 
@@ -48,6 +48,11 @@ def getTweets():
         documents.append(utils.gatherTweetData(document))
 
     return json.dumps(documents)
+
+
+@app.route("/tweets/count")
+def getNumberOfTweets():
+    return json.dumps({"count": utils.all_collection.count({})})
 
 
 @app.route("/tweets/<path:id>")
@@ -83,7 +88,7 @@ if __name__ == '__main__':
     t1 = threading.Thread(target=app.run, args=('0.0.0.0', port))
     t1.start()
     # app.run(host='0.0.0.0', port=port)
-    t2 = threading.Thread(target=utils.auto_insert_tweets)
-    t2.start()
+    # t2 = threading.Thread(target=utils.auto_insert_tweets)
+    # t2.start()
     t1.join()
-    t2.join()
+    # t2.join()
