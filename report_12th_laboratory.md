@@ -34,13 +34,13 @@ To do:
 
 ## Placinta Radu:
 -   Completed this week:
-	- Added a POST request (along with Razvan) in order to send the number of new tweets to Alexandru Oloieri's module
-	- Added multi-threading along with George, Razvan and Teofil.
-	- Cleaned up, rearranged the code
-
+	- Created unit tests for the methods inside utils.py
+	
+- Problems I ran into:
+	- I had a few issues with installing dependencies required by the program
+	
 -   Plans for next week:
-	- To further optimize/clean the code.
-	- Research related to REST, front-end design etc.
+	- Clean up code, work on integration
 
 ## Boghez George:
 -   Completed this week:
