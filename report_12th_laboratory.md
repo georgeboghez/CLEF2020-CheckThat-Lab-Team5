@@ -1,4 +1,4 @@
-# 11th Laboratory's Report
+# 12th Laboratory's Report
 
 
 ## Tanase Teofil:
@@ -25,10 +25,11 @@ To do:
 ## Roșu Cristian-Mihai:
 
 -   Completed this week: 
-    - Helped add a data insertion detection functionality alongside George and Cătălin
-    - Removed some unnecessary Flask routes: */all* and */all/count* 
--   Problems this week: Migrating a part of our tables from mLab to AWS for portability
--   Plans for next week: Efficiently divide work among the cooperating teams and help the frontend
+    - Wrote unit tests for the newly modified crawler.py in test_crawler.py
+    - Raised crawler.py code coverage to 95%
+    - Helped coleagues with other test classes 
+-   Problems this week: Finding and using the right pyhton packages and services for running unit tests locally
+-   Plans for next week: Efficiently divide work among the cooperating teams and further help with integration
 
 
 ## Placinta Radu:

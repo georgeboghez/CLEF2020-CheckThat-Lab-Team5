@@ -1,4 +1,3 @@
-from main import features_collection, verdict_collection
 from pymongo import MongoClient
 from classifier import is_news
 from watchdog import conn
