@@ -6,7 +6,6 @@ import pusher
 import redis
 import os
 
-
 BEFORE_CHANNEL = 'DEFAULT'
 CHANGED_EVENT = "CHANGED"
 INSERTED_EVENT = "INSERTED"
@@ -16,7 +15,6 @@ listen = ['high', 'default', 'low']
 redis_url = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')
 
 conn = redis.from_url(redis_url)
-
 
 pusher_client = pusher.Pusher(
     app_id='992704',
@@ -29,9 +27,8 @@ pusher_client = pusher.Pusher(
 db = pymongo.MongoClient(
     "mongodb+srv://watchdog:example@clef-uaic-svoxc.mongodb.net/test?retryWrites=true&w=majority").Tweets
 
-
 def exists(_id):
-    cursor = db.filteredTweets.find({'_id': ObjectId(_id)})
+    cursor = db.filteredTweets_v1.find({'_id': ObjectId(_id)})
     found = False
     id = ""
     for i in cursor:
@@ -40,28 +37,25 @@ def exists(_id):
         break
     return found, id
 
-
 def isFeatured(_id):
-    cursor = db.tweetsFeatures.find({'_id': ObjectId(_id)})
+    cursor = db.tweetsFeatures_v1.find({'_id': ObjectId(_id)})
     found = False
     id = ""
     for i in cursor:
         found = True
-        id = str(i['reference'])
+        id = i['reference']
         break
     return found, id
-
 
 def isFinal(_id):
-    cursor = db.tweetsVerdict.find({'_id': ObjectId(_id)})
+    cursor = db.tweetsVerdict_v1.find({'_id': ObjectId(_id)})
     found = False
     id = ""
     for i in cursor:
         found = True
-        id = str(i['reference'])
+        id = i['reference']
         break
     return found, id
-
 
 def getStatus(_id):
     status, id = isFinal(_id)
@@ -74,7 +68,6 @@ def getStatus(_id):
     if status:
         return 1, id
     return 0, ""
-
 
 class MongoWatchdog:
     def __init__(self, channel):
@@ -89,33 +82,31 @@ class MongoWatchdog:
             _id = str(change['documentKey']['_id'])
             collection = change['ns']['coll']
 
-            if change['operationType'] == "insert" and (collection == "filteredTweets" or collection == "tweetsFeatures" or collection == "tweetsVerdict"):
+            if change['operationType'] == "insert" and (collection == "filteredTweets_v1" or collection == "tweetsFeatures_v1" or collection == "tweetsVerdict_v1"):
                 status, id = getStatus(_id)
                 if status == 3 or status == 2:
                     self.handleChange(id)
                 else:
                     self.handleNew(id)
-            elif change['operationType'] == "replace" and collection == "tweetsVerdict":
+            elif change['operationType'] == "replace" and collection == "tweetsVerdict_v1":
                 status, id = getStatus(_id)
                 if status == 3 or status == 2:
                     self.handleChange(id)
 
     def handleNew(self, id):
         print("NEW TWEET")
-        self.sendTrigger(self.channel, INSERTED_EVENT, id)
+        self.sendTrigger(self.channel, INSERTED_EVENT, str(id))
 
     def handleChange(self, id):
         print("CHANGED TWEET STATUS")
-        self.sendTrigger(self.channel, CHANGED_EVENT, id)
+        self.sendTrigger(self.channel, CHANGED_EVENT, str(id))
 
     def sendTrigger(self, channel, event, id):
         pusher_client.trigger(channel, event, {'id': id})
 
-
 def watchdog_serve():
     watchdog = MongoWatchdog(BEFORE_CHANNEL)
     watchdog.serve()
-
 
 if __name__ == '__main__':
     t1 = threading.Thread(target=watchdog_serve)
@@ -124,4 +115,3 @@ if __name__ == '__main__':
         worker = Worker(map(Queue, listen))
         worker.work()
     t1.join()
-
