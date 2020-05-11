@@ -30,7 +30,7 @@ def insert_tweets():
         tweet = json.loads(tweet)
         tweet2 = db.filteredTweets.find_one({"id_str": tweet['id_str']})
         if not tweet2:
-            db.unfilteredTweets.insert_one(tweet)
+            # db.unfilteredTweets.insert_one(tweet)
             if is_news(tweet):
                 CONTOR += 1
                 print(CONTOR)
