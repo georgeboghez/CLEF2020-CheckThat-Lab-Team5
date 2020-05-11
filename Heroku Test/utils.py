@@ -6,7 +6,7 @@ import requests
 import crawler
 import json
 import time
-import nltk
+
 
 MONGO_URL = 'mongodb+srv://watchdog:example@clef-uaic-svoxc.mongodb.net/test?retryWrites=true&w=majority'
 client = MongoClient(MONGO_URL)
