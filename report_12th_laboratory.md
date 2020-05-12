@@ -4,12 +4,13 @@
 ## Tanase Teofil:
 
 Completion:
-- Created the design.psd of the platform alongside Elisa Giurgea.
-- Added code for multi-threading using background tasks alongside George, Razvan and Radu.
+- Created the modal which holds information regarding a particular tweet using angular.js alongside George.
 
+Issues:
+- Figuring out how to display current tweet upon clicking.
+- Centering the tweet.
 To do: 
-- Further optimise the code and help my team.
-- To help on the front-end side.
+- Work on integration and clean up code where it can still be improved.
 
 ## Bejenariu Razvan-Andrei:
 
