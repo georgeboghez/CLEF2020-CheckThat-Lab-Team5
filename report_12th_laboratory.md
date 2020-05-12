@@ -9,6 +9,7 @@ Completion:
 Issues:
 - Figuring out how to display current tweet upon clicking.
 - Centering the tweet.
+
 To do: 
 - Work on integration and clean up code where it can still be improved.
 
