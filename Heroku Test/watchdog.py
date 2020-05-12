@@ -35,7 +35,7 @@ def exists(_id):
         found = True
         id = _id
         break
-    return found, id
+    return found, str(id)
 
 def isFeatured(_id):
     cursor = db.tweetsFeatures_v1.find({'_id': ObjectId(_id)})
@@ -45,7 +45,7 @@ def isFeatured(_id):
         found = True
         id = i['reference']
         break
-    return found, id
+    return found, str(id)
 
 def isFinal(_id):
     cursor = db.tweetsVerdict_v1.find({'_id': ObjectId(_id)})
@@ -55,7 +55,7 @@ def isFinal(_id):
         found = True
         id = i['reference']
         break
-    return found, id
+    return found, str(id)
 
 def getStatus(_id):
     status, id = isFinal(_id)
@@ -88,7 +88,7 @@ class MongoWatchdog:
                     self.handleChange(id)
                 else:
                     self.handleNew(id)
-            elif change['operationType'] == "replace" and collection == "tweetsVerdict_v1":
+            elif (change['operationType'] == "replace" or change['operationType'] == 'update') and collection == "tweetsVerdict_v1":
                 status, id = getStatus(_id)
                 if status == 3 or status == 2:
                     self.handleChange(id)
@@ -100,7 +100,7 @@ class MongoWatchdog:
     def handleChange(self, id):
         print("CHANGED TWEET STATUS")
         self.sendTrigger(self.channel, CHANGED_EVENT, str(id))
-
+        
     def sendTrigger(self, channel, event, id):
         pusher_client.trigger(channel, event, {'id': id})
 

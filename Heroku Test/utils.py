@@ -66,6 +66,8 @@ def gatherTweetData(tweet):
     if verdict is not None:
         del verdict['_id']
         del verdict['reference']
+        tweet['cnn_verdict'] = verdict['cnn_verdict']
+        tweet['svm_verdict'] = verdict['svm_verdict']
         tweet.update(verdict)
     tweet['_id'] = str(tweet['_id'])
     return tweet
