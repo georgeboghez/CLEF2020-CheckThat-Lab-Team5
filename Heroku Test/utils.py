@@ -31,7 +31,7 @@ def insert_tweets():
             # db.unfilteredTweets.insert_one(tweet)
             if is_news(tweet):
                 CONTOR += 1
-                print(CONTOR)
+                print('Inserting tweet number ' + CONTOR + ' into the db.')
                 db.filteredTweets_v1.insert_one(tweet)
     response = requests.post(
         'https://nlp-module.herokuapp.com/process', json={"count": CONTOR})

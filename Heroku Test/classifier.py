@@ -6,10 +6,8 @@ from nltk.corpus import stopwords
 
 TWEET_LANGUAGE_FIELD = 'lang'
 TWEET_TEXT_FIELD = 'full_text'
-TWEET_RETWEETED_STATUS_FIELD = 'retweeted_status'
 TWEET_TAGS_FIELD = 'hashtags'
 TWEET_TAG_TEXT_FIELD = 'text'
-TWEET_ENTITIES_FIELD = 'entities'
 
 CSV_TWEET_ID_FIELD = "tweet_id"
 CSV_TWEET_TEXT_FIELD = "tweet_text"
@@ -22,14 +20,11 @@ DEFAULT_LABELS = ['news', 'ad', 'job', 'other']
 
 
 def get_text_from_tweet(tweet):
-    if TWEET_RETWEETED_STATUS_FIELD in tweet:
-        return tweet[TWEET_RETWEETED_STATUS_FIELD][TWEET_TEXT_FIELD]
-
     return tweet[TWEET_TEXT_FIELD]
 
 
 def get_tags_from_tweet(tweet):
-    tags_list = tweet[TWEET_ENTITIES_FIELD][TWEET_TAGS_FIELD]
+    tags_list = tweet[TWEET_TAGS_FIELD]
     tags = [tag[TWEET_TAG_TEXT_FIELD] for tag in tags_list]
     new_tags = [tag.lower() for tag in tags]
     return new_tags

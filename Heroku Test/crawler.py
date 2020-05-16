@@ -1,5 +1,6 @@
 import tweepy as tw
 import json
+import pprint
 
 CONSUMER_KEY = 'CmQS1BFO5D38aYu38isgYfQSM'
 CONSUMER_SECRET = '0BT4Pvkox9y4USuKmzsh6IzzfymdMcPrCKANnYVc82qXZMRn7D'
@@ -16,9 +17,10 @@ userList = ["EU_Comission", "realDonaldTrump", "BernieSanders",
             "JoeBiden", "elonmusk", "tconnellyRTE",
             "BarackObama", "Samsung", "NASA"]
 
-keyWords = {"coronavirus": 2,
-            "news": 5
-            # "pope": 15,
+keyWords = {"news": 5,
+            "coronavirus": 2,
+            "news": 5,
+            "pope": 15,
             # "china": 15,
             # "#newjob": 15,
             # "#jobs": 2,
@@ -71,7 +73,30 @@ def getTweets(search_word, date_since, count):
                             lang="en",
                             tweet_mode='extended',
                             since=date_since).items(count)):
-        tweetList.append(json.dumps(tweet._json, indent=4, sort_keys=True))
+        if 'retweeted_status' in tweet._json:
+            tweetList.append(json.dumps({'full_text': tweet._json['retweeted_status']['full_text'],
+                                         'lang': tweet._json['lang'],
+                                         'screen_name': tweet._json['retweeted_status']['user']['screen_name'],
+                                         'name': tweet._json['retweeted_status']['user']['name'],
+                                         'profile_image_url_https': tweet._json['retweeted_status']['user']['profile_image_url_https'],
+                                         'retweet_count': tweet._json['retweeted_status']['retweet_count'],
+                                         'created_at': tweet._json['retweeted_status']['created_at'],
+                                         'id_str': tweet._json['retweeted_status']['id_str'],
+                                         'favorite_count': tweet._json['retweeted_status']['favorite_count'],
+                                         'hashtags': tweet._json['retweeted_status']['entities']['hashtags']}, 
+                                         indent=4, sort_keys=True))
+        else:
+            tweetList.append(json.dumps({'full_text': tweet._json['full_text'], 
+                                         'lang': tweet._json['lang'], 
+                                         'screen_name': tweet._json['user']['screen_name'], 
+                                         'name': tweet._json['user']['name'], 
+                                         'profile_image_url_https': tweet._json['user']['profile_image_url_https'],
+                                         'retweet_count': tweet._json['retweet_count'], 
+                                         'created_at': tweet._json['created_at'], 
+                                         'id_str': tweet._json['id_str'], 
+                                         'favorite_count': tweet._json['favorite_count'], 
+                                         'hashtags': tweet._json['entities']['hashtags']}, 
+                                         indent=4, sort_keys=True))
     if len(tweetList) - length == count:
         return True
     return False
@@ -91,7 +116,30 @@ def getTweetsByUsers(user_ids, date_since, count):
                                 id=user,
                                 tweet_mode='extended',
                                 since=date_since).items(count)):
-            tweetList.append(json.dumps(tweet._json, indent=4, sort_keys=True))
+            if 'retweeted_status' in tweet._json:
+                tweetList.append(json.dumps({'full_text': tweet._json['retweeted_status']['full_text'],
+                                             'lang': tweet._json['lang'],
+                                             'screen_name': tweet._json['retweeted_status']['user']['screen_name'],
+                                             'name': tweet._json['retweeted_status']['user']['name'],
+                                             'profile_image_url_https': tweet._json['retweeted_status']['user']['profile_image_url_https'],
+                                             'retweet_count': tweet._json['retweeted_status']['retweet_count'],
+                                             'created_at': tweet._json['retweeted_status']['created_at'],
+                                             'id_str': tweet._json['retweeted_status']['id_str'],
+                                             'favorite_count': tweet._json['retweeted_status']['favorite_count'],
+                                             'hashtags': tweet._json['retweeted_status']['entities']['hashtags']}, 
+                                             indent=4, sort_keys=True))
+            else:
+                tweetList.append(json.dumps({'full_text': tweet._json['full_text'], 
+                                             'lang': tweet._json['lang'],
+                                             'screen_name': tweet._json['user']['screen_name'], 
+                                             'name': tweet._json['user']['name'], 
+                                             'profile_image_url_https': tweet._json['user']['profile_image_url_https'],
+                                             'retweet_count': tweet._json['retweet_count'], 
+                                             'created_at': tweet._json['created_at'], 
+                                             'id_str': tweet._json['id_str'], 
+                                             'favorite_count': tweet._json['favorite_count'], 
+                                             'hashtags': tweet._json['entities']['hashtags']}, 
+                                             indent=4, sort_keys=True))
     if len(tweetList) - length == count * len(user_ids):
         return True
     return False
@@ -110,3 +158,7 @@ def gatherTweets(dummyNumber=0):
     # if len(tweetList) != sum:
     #     return False
     return tweetList
+
+
+if __name__ == '__main__':
+    gatherTweets()
