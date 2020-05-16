@@ -7,17 +7,15 @@ import crawler
 import json
 import time
 
-
 MONGO_URL = 'mongodb+srv://watchdog:example@clef-uaic-svoxc.mongodb.net/test?retryWrites=true&w=majority'
 client = MongoClient(MONGO_URL)
 db = client.Tweets
 
-all_collection = db.filteredTweets
-features_collection = db.tweetsFeatures
-verdict_collection = db.tweetsVerdict
+all_collection = db.filteredTweets_v1
+features_collection = db.tweetsFeatures_v1
+verdict_collection = db.tweetsVerdict_v1
 
 q = Queue(connection=conn)
-
 
 def insert_tweets():
     # global CONTOR
@@ -28,20 +26,19 @@ def insert_tweets():
         return "invalid number of retrieved tweets"
     for tweet in tweetlist:
         tweet = json.loads(tweet)
-        tweet2 = db.filteredTweets.find_one({"id_str": tweet['id_str']})
+        tweet2 = db.filteredTweets_v1.find_one({"id_str": tweet['id_str']})
         if not tweet2:
             # db.unfilteredTweets.insert_one(tweet)
             if is_news(tweet):
                 CONTOR += 1
                 print(CONTOR)
-                db.filteredTweets.insert_one(tweet)
+                db.filteredTweets_v1.insert_one(tweet)
     response = requests.post(
         'https://nlp-module.herokuapp.com/process', json={"count": CONTOR})
     print(response.status_code, response.text)
     if response.json()["response"] == "ok":
         return True
     return False
-
 
 def auto_insert_tweets(WAIT_TIME_SECONDS=20 * 60, num=-1):
     if num == -1:
@@ -56,12 +53,12 @@ def auto_insert_tweets(WAIT_TIME_SECONDS=20 * 60, num=-1):
             num -= 1
     return True
 
-
 def gatherTweetData(tweet):
-    referencedID = str(tweet['_id'])
+    referencedID = tweet['_id']
     tweet['_id'] = referencedID
     features = features_collection.find_one({"reference": referencedID})
     verdict = verdict_collection.find_one({"reference": referencedID})
+    print(verdict)
     if features is not None:
         del features['_id']
         del features['reference']
@@ -69,5 +66,8 @@ def gatherTweetData(tweet):
     if verdict is not None:
         del verdict['_id']
         del verdict['reference']
+        tweet['cnn_verdict'] = verdict['cnn_verdict']
+        tweet['svm_verdict'] = verdict['svm_verdict']
         tweet.update(verdict)
+    tweet['_id'] = str(tweet['_id'])
     return tweet

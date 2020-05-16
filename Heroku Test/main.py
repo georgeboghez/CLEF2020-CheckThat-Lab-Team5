@@ -44,7 +44,7 @@ def getTweets():
     limit_param = int(limit_param)
 
     documents = []
-    for document in utils.all_collection.find({}).skip(skip_param).limit(limit_param):
+    for document in utils.all_collection.find({}).sort('_id', -1).skip(skip_param).limit(limit_param):
         documents.append(utils.gatherTweetData(document))
 
     return json.dumps(documents)
