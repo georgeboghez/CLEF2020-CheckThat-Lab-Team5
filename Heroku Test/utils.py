@@ -56,13 +56,9 @@ def auto_insert_tweets(WAIT_TIME_SECONDS=20 * 60, num=-1):
 def gatherTweetData(tweet):
     referencedID = tweet['_id']
     tweet['_id'] = referencedID
-    features = features_collection.find_one({"reference": referencedID})
     verdict = verdict_collection.find_one({"reference": referencedID})
-    print(verdict)
-    if features is not None:
-        del features['_id']
-        del features['reference']
-        tweet['features'] = features
+    del tweet['hashtags']
+    del tweet['lang']
     if verdict is not None:
         del verdict['_id']
         del verdict['reference']

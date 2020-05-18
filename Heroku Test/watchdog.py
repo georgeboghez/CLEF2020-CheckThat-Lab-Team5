@@ -18,8 +18,8 @@ conn = redis.from_url(redis_url)
 
 pusher_client = pusher.Pusher(
     app_id='992704',
-    key='8021a486e2f0eaac6b68',
-    secret='9496d5a64fdef78fba6a',
+    key='576452672b8655ff2e01',
+    secret='24af546a041262912214',
     cluster='eu',
     ssl=True
 )
@@ -37,16 +37,6 @@ def exists(_id):
         break
     return found, str(id)
 
-def isFeatured(_id):
-    cursor = db.tweetsFeatures_v1.find({'_id': ObjectId(_id)})
-    found = False
-    id = ""
-    for i in cursor:
-        found = True
-        id = i['reference']
-        break
-    return found, str(id)
-
 def isFinal(_id):
     cursor = db.tweetsVerdict_v1.find({'_id': ObjectId(_id)})
     found = False
@@ -61,9 +51,6 @@ def getStatus(_id):
     status, id = isFinal(_id)
     if status:
         return 3, id
-    status, id = isFeatured(_id)
-    if status:
-        return 2, id
     status, id = exists(_id)
     if status:
         return 1, id
@@ -82,15 +69,15 @@ class MongoWatchdog:
             _id = str(change['documentKey']['_id'])
             collection = change['ns']['coll']
 
-            if change['operationType'] == "insert" and (collection == "filteredTweets_v1" or collection == "tweetsFeatures_v1" or collection == "tweetsVerdict_v1"):
+            if change['operationType'] == "insert" and (collection == "filteredTweets_v1"):
                 status, id = getStatus(_id)
-                if status == 3 or status == 2:
+                if status == 3:
                     self.handleChange(id)
                 else:
                     self.handleNew(id)
             elif (change['operationType'] == "replace" or change['operationType'] == 'update') and collection == "tweetsVerdict_v1":
                 status, id = getStatus(_id)
-                if status == 3 or status == 2:
+                if status == 3:
                     self.handleChange(id)
 
     def handleNew(self, id):
