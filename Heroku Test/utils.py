@@ -2,6 +2,7 @@ from pymongo import MongoClient
 from classifier import is_news
 from watchdog import conn
 from rq import Queue
+import performance
 import requests
 import crawler
 import json
@@ -17,13 +18,25 @@ verdict_collection = db.tweetsVerdict_v1
 
 q = Queue(connection=conn)
 
+
 def insert_tweets():
     # global CONTOR
     CONTOR = 0
+
+    start_time = performance.update_start_time('crawler')
+    start_v1 = performance.get_current_time()
     tweetlist = crawler.gatherTweets()
 
     if tweetlist is False:
         return "invalid number of retrieved tweets"
+    end_v1 = performance.get_current_time()
+    duration = end_v1 - start_v1
+    performance.update_end_time_duration('crawler', start_time + duration)
+
+    start_time = performance.update_start_time('filtering')
+    start_v1 = performance.get_current_time()
+
+    print("Filtering the tweets: ")
     for tweet in tweetlist:
         tweet = json.loads(tweet)
         tweet2 = db.filteredTweets_v1.find_one({"id_str": tweet['id_str']})
@@ -31,14 +44,25 @@ def insert_tweets():
             # db.unfilteredTweets.insert_one(tweet)
             if is_news(tweet):
                 CONTOR += 1
-                print('Inserting tweet number ' + str(CONTOR) + ' into the db.')
-                db.filteredTweets_v1.insert_one(tweet)
+                print("Valid tweet #" + str(CONTOR))
+            else:
+                tweetlist.remove(tweet)
+        else:
+            tweetlist.remove(tweet)
+    print('Inserting ' + str(CONTOR) + ' tweets into the db.')
+    db.filteredTweets_v1.insert_many(tweetlist)
+
+    end_v1 = performance.get_current_time()
+    duration = end_v1 - start_v1
+    performance.update_end_time_duration('filtering', start_time + duration)
+
     response = requests.post(
         'https://nlp-module.herokuapp.com/process', json={"count": CONTOR})
     print(response.status_code, response.text)
     if response.json()["response"] == "ok":
         return True
     return False
+
 
 def auto_insert_tweets(WAIT_TIME_SECONDS=20 * 60, num=-1):
     if num == -1:
@@ -52,6 +76,7 @@ def auto_insert_tweets(WAIT_TIME_SECONDS=20 * 60, num=-1):
             result = q.enqueue_call(insert_tweets, timeout=15 * 60)
             num -= 1
     return True
+
 
 def gatherTweetData(tweet):
     referencedID = tweet['_id']
