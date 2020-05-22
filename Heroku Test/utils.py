@@ -38,11 +38,11 @@ def insert_tweets():
 
     print("Filtering the tweets: ")
     for tweet in tweetlist:
-        tweet = json.loads(tweet)
-        tweet2 = db.filteredTweets_v1.find_one({"id_str": tweet['id_str']})
+        tweet_json = json.loads(tweet)
+        tweet2 = db.filteredTweets_v1.find_one({"id_str": tweet_json['id_str']})
         if not tweet2:
             # db.unfilteredTweets.insert_one(tweet)
-            if is_news(tweet):
+            if is_news(tweet_json):
                 CONTOR += 1
                 print("Valid tweet #" + str(CONTOR))
             else:
