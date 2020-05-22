@@ -37,20 +37,18 @@ def insert_tweets():
     start_v1 = performance.get_current_time()
 
     print("Filtering the tweets: ")
+    tweetsToInsert = list()
     for tweet in tweetlist:
-        tweet_json = json.loads(tweet)
-        tweet2 = db.filteredTweets_v1.find_one({"id_str": tweet_json['id_str']})
+        tweet = json.loads(tweet)
+        tweet2 = db.filteredTweets_v1.find_one({"id_str": tweet['id_str']})
         if not tweet2:
             # db.unfilteredTweets.insert_one(tweet)
-            if is_news(tweet_json):
+            if is_news(tweet):
                 CONTOR += 1
                 print("Valid tweet #" + str(CONTOR))
-            else:
-                tweetlist.remove(tweet)
-        else:
-            tweetlist.remove(tweet)
+                tweetsToInsert.append(tweet)
     print('Inserting ' + str(CONTOR) + ' tweets into the db.')
-    db.filteredTweets_v1.insert_many(tweetlist)
+    db.filteredTweets_v1.insert_many(tweetsToInsert)
 
     end_v1 = performance.get_current_time()
     duration = end_v1 - start_v1
